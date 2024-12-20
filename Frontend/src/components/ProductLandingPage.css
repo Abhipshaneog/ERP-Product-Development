@@ -1,0 +1,132 @@
+.product-landing-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background-color: #f9f9f9;
+  background-color: rgba(131, 183, 53, 1);
+  font-family: "Lato", Arial, Helvetica, sans-serif;
+  color: white;
+}
+
+.product-landing-content {
+  display: flex;
+  flex-direction: row;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.product-image-container {
+  flex: 1;
+  padding-right: 20px;
+  opacity: 0; /* Initially hide the image */
+  transform: translateX(-100%); /* Position it off the screen */
+  animation: slideIn 6s forwards; /* Apply the slide-in animation */
+  animation-delay: 1s; /* Delay the animation */
+  animation-iteration-count: infinite; /* Repeat the animation infinitely */
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.product-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.product-title {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.product-name {
+  font-size: 54px;
+  line-height: 64px;
+  font-family: "Poppins", sans-serif;
+}
+
+.product-info p {
+  font-size: 16px;
+  margin: 8px 0;
+}
+
+.product-details strong {
+  font-weight: bold;
+}
+
+.product-header {
+  margin-bottom: 20px;
+}
+
+.product-info {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+}
+
+.product-info div {
+  margin-right: 25px;
+}
+
+.product-info div h4 {
+  border-bottom: 1px solid rgb(204, 204, 204);
+  line-height: 24px;
+  font-size: 16px;
+  padding-bottom: 10px;
+  font-weight: 500;
+}
+
+.product-info div p {
+  padding-top: 10px;
+  font-style: italic;
+}
+
+.product-footer {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.price {
+  font-size: 32px;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-right: 25px;
+  margin-bottom: 10px;
+}
+
+.add-to-cart-btn {
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 12px 24px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+  background-color: white;
+  color: #333333;
+}
