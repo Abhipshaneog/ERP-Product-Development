@@ -1,0 +1,93 @@
+/* General container styles */
+.online-store-container {
+  font-family: "Lato", Arial, Helvetica, sans-serif;
+  padding: 40px 0;
+}
+
+.store-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* First column - Image */
+.store-image-column {
+  flex: 1;
+  padding-right: 20px;
+}
+
+.store-image {
+  width: 100%;
+  height: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Second column - Text details */
+.store-details-column {
+  flex: 1.5;
+  padding-left: 20px;
+  text-align: left;
+}
+
+/* Intro design text */
+.design-intro p {
+  font-size: 16px;
+  color: #83b735;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Store title */
+.store-title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 15px;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Intro text (emphasized) */
+.store-intro {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+/* Main description text */
+.store-description,
+.store-extra-info {
+  font-size: 18px;
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* Footer section */
+.store-footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.store-footer-text em {
+  font-size: 14px;
+  color: #888;
+}
+
+.store-social-icons {
+  text-align: right;
+}
+
+.store-social-icons .social-icon {
+  font-size: 20px;
+  color: #333;
+  margin-left: 15px;
+  transition: color 0.3s ease;
+}
+
+.store-social-icons .social-icon:hover {
+  color: #83b735;
+}

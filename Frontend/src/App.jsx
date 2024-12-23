@@ -2,30 +2,19 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
-import Navbar from "./components/navbar";
-import Menu from "./components/Menu";
-import MenuSecond from "./components/MenuSecond";
-import Hero from "./components/Hero";
-import FeaturedComponent from "./components/FeaturedComponent";
-import FeaturedCategories from "./components/FeaturedCategories";
-import ProductLandingPage from "./components/ProductLandingPage";
-import Footer from "./components/footer";
-import EcommerceSolution from "./components/EcommerceSolution";
-import Newsletter from "./components/Newsletter";
+import HomePageIndex from "./components/HomePage/HomePageIndex";
+import AboutIndex from "./components/AboutUsPage/AboutIndex";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <>
-      <Navbar />
-      <Menu />
-      <MenuSecond/>
-      <Hero/>
-      <FeaturedComponent/>
-      <FeaturedCategories/>
-      <ProductLandingPage/>
-      <EcommerceSolution/>
-      <Newsletter/>
-      <Footer/>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePageIndex />} />
+        <Route path="/about" element={<AboutIndex />} />
+      </Routes>
+    </Router>
     </>
   );
 }

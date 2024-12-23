@@ -1,0 +1,78 @@
+/* VideoSection.css */
+
+.video-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background-color: #f9f9f9;
+  font-family: "Lato", Arial, Helvetica, sans-serif;
+}
+
+.video-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  max-width: 1200px;
+  justify-content: center;
+}
+
+.video-card {
+  overflow: hidden;
+  flex: 1;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-5px);
+}
+
+.video-link {
+  text-decoration: none;
+}
+
+.video-thumbnail {
+  width: 100%;
+  height: 270px;
+  overflow: hidden;
+}
+
+.video-thumbnail-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.video-card:hover .video-thumbnail-img {
+  transform: scale(1.05);
+}
+
+.video-info {
+  padding-top: 20px;
+  /* text-align: center; */
+}
+
+.video-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  font-family: "Poppins", sans-serif;
+}
+
+.video-description {
+  font-size: 14px;
+  color: #777;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .video-container {
+    gap: 15px;
+  }
+
+  .video-card {
+    width: 100%;
+  }
+}

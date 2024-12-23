@@ -1,0 +1,136 @@
+/* General Container */
+.team-section{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-family: "Lato", Arial, Helvetica, sans-serif;
+}
+.team-section-main {
+  padding: 50px 0;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.team-section-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.words-about-us {
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #83b735;
+}
+
+.team-title {
+  font-size: 32px;
+  margin-top: 10px;
+}
+
+.team-description {
+  font-size: 16px;
+  color: #666;
+  margin-top: 10px;
+}
+
+/* Team Members Layout */
+.team-member-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.team-member-card {
+  width: 100%;
+  max-width: 280px;
+  margin-bottom: 30px;
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.team-member-card:hover {
+  transform: translateY(-10px);
+}
+
+.team-member-image {
+  width: 100%;
+  height: 450px;
+  object-fit: cover;
+  border-bottom: 2px solid #f1f1f1;
+}
+
+.team-member-body {
+  padding: 20px;
+}
+
+.team-member-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 10px 0;
+  font-family: "Poppins", sans-serif;
+  color: #232323;
+}
+
+.team-member-role {
+  font-size: 14px;
+  color: #A5A5A5;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.social-icons-team {
+  display: flex;
+  justify-content: center;
+}
+
+.social-icons-team a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 7px;
+  font-size: 18px;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50%;
+  background-color: red;
+  width: 30px;
+  height: 30px;
+}
+
+
+.social-icons-team a:nth-child(1) {
+  background-color: #3b5998; /* Facebook */
+}
+
+.social-icons-team a:nth-child(2) {
+  background-color: #e4405f; /* Instagram */
+}
+
+.social-icons-team a:nth-child(3) {
+  background-color: #0077b5; /* LinkedIn */
+}
+
+.social-icons-team a:nth-child(4) {
+  background-color: #1da1f2; /* Twitter */
+}
+
+
+
+.social-icons-team a:hover {
+  color: #83b735;
+}
+
+@media (min-width: 768px) {
+  .team-member-card {
+    width: 48%; /* 2 cards per row */
+  }
+}
+
+@media (min-width: 1024px) {
+  .team-member-card {
+    width: 22%; /* 4 cards per row */
+  }
+}
