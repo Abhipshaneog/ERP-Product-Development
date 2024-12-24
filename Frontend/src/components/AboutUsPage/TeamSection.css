@@ -5,6 +5,7 @@
   align-items: center;
   width: 100%;
   font-family: "Lato", Arial, Helvetica, sans-serif;
+  padding: 0 20px;
 }
 .team-section-main {
   padding: 50px 0;
@@ -44,7 +45,7 @@
 
 .team-member-card {
   width: 100%;
-  max-width: 280px;
+  max-width: 380px;
   margin-bottom: 30px;
   overflow: hidden;
   text-align: center;
@@ -132,5 +133,16 @@
 @media (min-width: 1024px) {
   .team-member-card {
     width: 22%; /* 4 cards per row */
+  }
+
+}
+@media (max-width: 1024px) {
+  .team-member-image {
+    height: 617px;
+  }
+  .team-member-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
   }
 }

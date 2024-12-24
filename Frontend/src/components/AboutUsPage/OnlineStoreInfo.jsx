@@ -39,7 +39,7 @@ const OnlineStoreInfo = () => {
             {/* Footer Row */}
             <div className="store-footer-row">
               <div className="store-footer-text">
-                <em>Developed by Xtemos Studio @ 2024</em>
+                <em>Developed by <span>X</span>temos Studio @ 2024</em>
               </div>
 
               {/* Logo with Social Media Icons */}

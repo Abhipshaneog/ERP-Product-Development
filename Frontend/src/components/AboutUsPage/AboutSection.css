@@ -1,11 +1,14 @@
 /* About Section Styling */
 .about-section {
   background-image: url('https://woodmart.b-cdn.net/wp-content/uploads/2021/03/w-about-us1-infobox-bg-opt.jpg?id=35054');
+  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   font-family: "Lato", Arial, Helvetica, sans-serif;
+  padding: 0 20px;
 }
 
 .about-section-main {
@@ -33,6 +36,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: 10px;
 }
 
 .developer-text {
@@ -104,7 +108,9 @@
 .grid-year {
   font-size: 44px;
   font-weight: 600;
+  transition: all 0.3s ease-in-out;
 }
+
 
 .grid-label {
   font-size: 20px;
@@ -112,7 +118,7 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1009px) {
   .about-content {
     flex-direction: column;
     align-items: center;
@@ -121,10 +127,5 @@
   .about-text, .about-grid {
     max-width: 100%;
   }
-
-  /* Adjust grid for smaller screens */
-  .grid-container {
-    grid-template-columns: 1fr; /* 1 column on small screens */
-    grid-template-rows: repeat(6, 1fr); /* 6 rows on small screens */
-  }
 }
+

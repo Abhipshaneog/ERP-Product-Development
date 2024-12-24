@@ -36,7 +36,7 @@ const NewMenu = () => {
       <div className="second-menu-container">
         {/* Browse Categories and Hamburger Menu */}
         <div className="browse-categories-container">
-          <button className="hamburger-menu" onClick={handleHamburgerClick}>
+          <button className="hamburger--menu" onClick={handleHamburgerClick}>
             <FaBars />
           </button>
           <div className="custom-dropdown">

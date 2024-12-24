@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Menu.css";
-import { FaSearch, FaHeart, FaShoppingCart } from "react-icons/fa"; 
-import {  FaCaretDown } from "react-icons/fa";
+import { FaSearch, FaCaretDown } from "react-icons/fa";
+import OffCanvas from "./OffCanvas";
 
 const Menu = () => {
   const [searchText, setSearchText] = useState("");
   const [category, setCategory] = useState("All Categories");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isOffCanvasOpen, setIsOffCanvasOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const handleSearch = () => {
     console.log("Search Text: ", searchText);
@@ -15,12 +17,38 @@ const Menu = () => {
 
   const handleCategorySelect = (selectedCategory) => {
     setCategory(selectedCategory);
-    setDropdownOpen(false); 
+    setDropdownOpen(false);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const menuElement = document.querySelector(".menu-container");
+      if (menuElement) {
+        setIsScrolled(window.scrollY > menuElement.offsetTop);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="menu-container">
+    <div className={`menu-container ${isScrolled ? "scrolled" : ""}`}>
+      <OffCanvas
+        isOpen={isOffCanvasOpen}
+        onClose={() => setIsOffCanvasOpen(false)}
+      />
       <div className="menu-main-content">
+        {/* Hamburger Menu */}
+        <div
+          className="hamburger-menu"
+          onClick={() => setIsOffCanvasOpen(true)}
+        >
+          <i className="fa fa-bars"></i>
+        </div>
+
         {/* Logo Section */}
         <div className="logo-container">
           <img
@@ -38,24 +66,28 @@ const Menu = () => {
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />
-
-          {/* Custom Styled Dropdown */}
           <div
             className="custom-dropdown"
             onClick={() => setDropdownOpen(!dropdownOpen)}
           >
-            <div className="dropdown-selected">{category} </div><FaCaretDown/>
+            <div className="dropdown-selected">{category} </div>
+            <FaCaretDown />
             {dropdownOpen && (
               <ul className="dropdown-options">
-                <li onClick={() => handleCategorySelect("All Categories")}>All Categories</li>
-                <li onClick={() => handleCategorySelect("Electronics")}>Electronics</li>
-                <li onClick={() => handleCategorySelect("Fashion")}>Fashion</li>
+                <li onClick={() => handleCategorySelect("All Categories")}>
+                  All Categories
+                </li>
+                <li onClick={() => handleCategorySelect("Electronics")}>
+                  Electronics
+                </li>
+                <li onClick={() => handleCategorySelect("Fashion")}>
+                  Fashion
+                </li>
                 <li onClick={() => handleCategorySelect("Home")}>Home</li>
                 <li onClick={() => handleCategorySelect("Beauty")}>Beauty</li>
               </ul>
             )}
           </div>
-
           <button className="search-btn" onClick={handleSearch}>
             <FaSearch />
           </button>

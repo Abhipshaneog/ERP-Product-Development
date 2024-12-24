@@ -7,6 +7,7 @@
 .nav-container {
   background-color: rgba(131, 183, 53, 1); 
   width: 100%;
+  padding: 0 20px;
 }
 
 
@@ -124,4 +125,37 @@
 }
 .title-container div{
     padding: 5px;
+}
+
+
+
+@media (max-width: 1040px) {
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Hide all sections except social icons */
+  .language, .country, .newsletter, .contact-us, .FAQ, .title {
+    display: none;
+  }
+
+  /* Center and show only social icons */
+  .social-container {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 0; /* Prevents extra space allocation */
+    border-left: 0;
+  }
+
+  .social-icons {
+    gap: 20px; /* Adds spacing between icons */
+  }
+
+  .icon {
+    font-size: 20px; /* Increase icon size for better visibility */
+  }
 }
