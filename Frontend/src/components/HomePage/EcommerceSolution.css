@@ -76,7 +76,7 @@
 }
 
 
-/* @media (max-width: 768px) {
+@media (max-width: 768px) {
   .main-ecommerce-solution-container {
     padding: 40px 20px; 
     background-image: none;
@@ -98,4 +98,4 @@
   .main-ecommerce-solution-container .description {
     font-size: 14px; 
   }
-} */
+}

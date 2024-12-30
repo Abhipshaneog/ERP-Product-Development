@@ -68,9 +68,9 @@
 .privacy-policy span {
   color: #333333;
 }
-/* @media (max-width: 768px) {
+@media (max-width: 768px) {
   .main-newsletter-container {
     padding: 40px 20px;
     background-image: none;
   }
-} */
+}

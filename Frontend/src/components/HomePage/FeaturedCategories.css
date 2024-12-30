@@ -263,7 +263,7 @@
 
 
 
-/* @media (max-width: 768px) {
+@media (max-width: 768px) {
   .products-grid {
     grid-template-columns: repeat(2, 1fr); 
     grid-gap: 15px; 
@@ -291,4 +291,4 @@
   .hover-details {
     bottom: -100px; 
   }
-} */
+}

@@ -132,7 +132,7 @@
 }
 
 
-/* @media (max-width: 700px) {
+@media (max-width: 700px) {
   .featured-container .row {
     flex-direction: column; 
     height: auto; 
@@ -150,4 +150,4 @@
   .row .column {
     height: auto; 
   }
-} */
+}
