@@ -10,7 +10,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 40px;
+  padding: 40px 0px;
+
   background-image: url("https://woodmart.b-cdn.net/wp-content/uploads/2015/12/about-us2-2.jpg?id=9082");
   background-size: cover;
   background-position: center;
@@ -22,6 +23,7 @@
 .text-content {
   max-width: 500px;
   padding: 20px;
+  padding-left: 0;
   border-radius: 8px;
 }
 
@@ -39,6 +41,7 @@
   margin-bottom: 20px;
   color: #242424;
   font-family: "Poppins", sans-serif;
+  display:block;
 }
 
 .main-ecommerce-solution-container .description {
@@ -69,4 +72,30 @@
 
 .button-group .contact-us {
   color: #3e3e3e;
+  display: block;
 }
+
+
+/* @media (max-width: 768px) {
+  .main-ecommerce-solution-container {
+    padding: 40px 20px; 
+    background-image: none;
+  }
+
+  .text-content {
+    padding: 0;
+  }
+
+  .intro-text {
+    font-size: 20px;
+  }
+
+  .main-ecommerce-solution-container .title {
+    font-size: 24px;
+    display: block;
+  }
+
+  .main-ecommerce-solution-container .description {
+    font-size: 14px; 
+  }
+} */

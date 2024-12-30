@@ -131,23 +131,23 @@
   margin-top: 6px;
 }
 
-/* Adjustments for responsiveness */
-@media (max-width: 700px) {
+
+/* @media (max-width: 700px) {
   .featured-container .row {
-    flex-direction: column; /* Stack items vertically */
-    height: auto; /* Allow height to adapt */
+    flex-direction: column; 
+    height: auto; 
   }
 
   .large-column,
   .grid-column {
-    height: auto; /* Remove fixed height for stacking */
+    height: auto; 
   }
 
   .image-item {
-    height: auto; /* Allow images to adapt naturally */
+    height: auto; 
   }
 
   .row .column {
-    height: auto; /* Allow column to adapt */
+    height: auto; 
   }
-}
+} */

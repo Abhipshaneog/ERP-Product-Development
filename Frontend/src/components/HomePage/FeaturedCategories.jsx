@@ -22,7 +22,7 @@ const FeaturedCategories = () => {
     category: "Accessories, Clocks",
     price: "$599.00",
     description:
-      "Himenaeos parturient nam a justo placerat lorem erat pretium a fusce pharetra pretium enim sagittis ut nunc neque torquent sem a leo. Dictumst himenaeos primis torquent ridiculus.",
+      "Himenaeos parturient nam a justo placerat lorem erat pretium a fusce pharetra pretium enim sagittis ut nunc",
     colors: ["#ff0000", "#00ff00", "#0000ff", "#f0f0f0", "#000000"], // Example colors
   };
 
@@ -65,7 +65,7 @@ const FeaturedCategories = () => {
               />
 
               {/* Colors Section */}
-              <div className="color-options-container">
+              {/* <div className="color-options-container">
                 <div className="color-options">
                   {productDetails.colors.map((color, colorIndex) => (
                     <div
@@ -75,7 +75,7 @@ const FeaturedCategories = () => {
                     ></div>
                   ))}
                 </div>
-              </div>
+              </div> */}
 
               <h3 className="product-title">{productDetails.title}</h3>
               <div className="product-category">{productDetails.category}</div>

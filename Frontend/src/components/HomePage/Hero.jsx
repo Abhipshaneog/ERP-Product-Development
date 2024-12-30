@@ -6,7 +6,7 @@ const Hero = () => {
 
   const images = [
     "https://woodmart.xtemos.com/wp-content/uploads/2021/04/blog-title-bg6-opt.jpg",
-    "https://woodmart.b-cdn.net/wp-content/uploads/2016/07/blog-1-furnit-1.jpg",
+    // "https://woodmart.b-cdn.net/wp-content/uploads/2016/07/blog-1-furnit-1.jpg",
     "https://woodmart.b-cdn.net/wp-content/uploads/2016/07/blog-1-furnit-2.jpg"
   ];
 
