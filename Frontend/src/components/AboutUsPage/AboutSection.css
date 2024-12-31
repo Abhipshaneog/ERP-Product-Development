@@ -1,0 +1,131 @@
+/* About Section Styling */
+.about-section {
+  background-image: url('https://woodmart.b-cdn.net/wp-content/uploads/2021/03/w-about-us1-infobox-bg-opt.jpg?id=35054');
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-family: "Lato", Arial, Helvetica, sans-serif;
+  padding: 0 20px;
+}
+
+.about-section-main {
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding: 60px 0;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.about-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.about-text {
+  flex: 1;
+  color: #fff;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.developer-text {
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  color: #83b735;
+}
+
+.about-title {
+  font-size: 36px;
+  margin-bottom: 15px;
+  font-family: "Poppins", sans-serif;
+}
+
+.about-link {
+  display: inline-block;
+  font-size: 13px;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-bottom: 2px solid white;
+  text-decoration: none;
+  width: 189px;
+}
+
+.about-grid {
+  flex: 1.3;
+  max-width: 100%;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 columns */
+  grid-template-rows: 1fr 1fr 1fr; /* 3 rows */
+}
+
+.grid-item {
+  padding: 20px;
+  color: #fff;
+  text-align: center;
+  border: none; /* Remove any default border */
+}
+
+/* Applying thinner borders based on grid item position */
+.grid-item:nth-child(1) {
+  border-bottom: 0.5px solid rgb(162, 162, 162); /* Reduced border size */
+  border-right: 0.5px solid rgb(162, 162, 162);  /* Reduced border size */
+}
+
+.grid-item:nth-child(2) {
+  border-bottom: 0.5px solid rgb(162, 162, 162); /* Reduced border size */
+}
+
+.grid-item:nth-child(3) {
+  border-bottom: 0.5px solid rgb(162, 162, 162); /* Reduced border size */
+  border-right: 0.5px solid rgb(162, 162, 162);  /* Reduced border size */
+}
+
+.grid-item:nth-child(4) {
+  border-bottom: 0.5px solid rgb(162, 162, 162); /* Reduced border size */
+}
+
+.grid-item:nth-child(5) {
+  border-right: 0.5px solid rgb(162, 162, 162); /* Reduced border size */
+}
+
+.grid-year {
+  font-size: 44px;
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+}
+
+
+.grid-label {
+  font-size: 20px;
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 1009px) {
+  .about-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about-text, .about-grid {
+    max-width: 100%;
+  }
+}
+

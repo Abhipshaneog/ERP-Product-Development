@@ -7,6 +7,7 @@
 .nav-container {
   background-color: rgba(131, 183, 53, 1); 
   width: 100%;
+  padding: 0 20px;
 }
 
 
@@ -124,4 +125,35 @@
 }
 .title-container div{
     padding: 5px;
+}
+
+
+
+@media (max-width: 1040px) {
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .language, .country, .newsletter, .contact-us, .FAQ, .title {
+    display: none;
+  }
+
+  .social-container {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 0; 
+    border-left: 0;
+  }
+
+  .social-icons {
+    gap: 20px;
+  }
+
+  .icon {
+    font-size: 20px; 
+  }
 }
