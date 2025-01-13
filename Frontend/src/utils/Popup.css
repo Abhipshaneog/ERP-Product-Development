@@ -1,0 +1,35 @@
+.popup-container {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .popup-container.success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .popup-container.error {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .popup-message {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .popup-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: inherit;
+  }
+  

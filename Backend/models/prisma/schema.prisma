@@ -1,0 +1,69 @@
+// This is your Prisma schema file
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["mongodb"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")  // MongoDB connection string
+}
+
+model User {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  email            String         @unique
+  passwordHash     String?        @map("password_hash") // Optional for Google users
+  googleId         String?        @unique @map("google_id") // Add a field for Google ID
+  phoneNumber      String?        @map("phone_number")
+  address          Json?
+  profilePicture   String?        @map("profile_picture")
+  role             String         @default("user")
+  status           String         @default("active")
+  emailVerified    Boolean        @default(false)
+  phoneVerified    Boolean        @default(false)
+  loyaltyPoints    Int            @default(0)
+  lastLogin        DateTime?      @map("last_login") // Optional since Google users might not have traditional login
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+
+  // Relationships
+  admin            Admin?         @relation
+  refreshTokens    RefreshToken[] // One-to-many relationship with RefreshToken
+  passwordResetTokens PasswordResetToken[] // One-to-many relationship with PasswordResetToken
+}
+
+model Admin {
+  id           String  @id @map("_id") @db.ObjectId
+  userId       String  @unique
+  permissions  Json?
+  isSuperadmin Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model RefreshToken {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  token       String   @unique              // Store the refresh token (hashed if required)
+  userId      String                        // Foreign key to associate with the User
+  deviceInfo  Json?                         // Optional: Store device or session details
+  expiresAt   DateTime                      // Expiration date of the token
+  createdAt   DateTime @default(now())      // Timestamp of token creation
+
+  user User @relation(fields: [userId], references: [id]) // Define the relation
+}
+
+model PasswordResetToken {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   // Email of the user requesting the password reset
+  token     String   @unique              // Unique token for password reset
+  expiresAt DateTime                      // Token expiration time
+  createdAt DateTime @default(now())      // Timestamp of token creation
+
+  user User @relation(fields: [email], references: [email]) // Define relation with User by email
+
+  @@index([expiresAt], map: "ttl_index") // Add this line to index expiresAt
+}
+

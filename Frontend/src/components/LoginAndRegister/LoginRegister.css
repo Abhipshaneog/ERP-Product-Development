@@ -1,0 +1,261 @@
+
+* {
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Lato', Arial, Helvetica, sans-serif;
+    background-color: #f4f7fc;
+    color: #333;
+  }
+  
+
+  .login-register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .login-register-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  
+
+  .form-column {
+    width: 48%;
+    background-color: #fff;
+    padding: 30px;
+  }
+  
+  .form-heading {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .form-label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  
+  .form-input:focus {
+    border-color: rgba(131, 183, 53, 1); 
+    outline: none;
+  }
+  
+  .form-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    color: #fff;
+    background-color: rgba(131, 183, 53, 1); 
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+  }
+  
+  .form-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .remember-me {
+    display: flex;
+    align-items: center;
+  }
+  
+  .remember-checkbox {
+    margin-right: 8px;
+  }
+  
+  .remember-label {
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .lost-password {
+    font-size: 14px;
+    color: rgba(131, 183, 53, 1); 
+    text-decoration: none;
+  }
+  
+  .lost-password:hover {
+    text-decoration: underline;
+  }
+  
+  .or-login {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+  }
+  
+  .social-login {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .social-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    text-transform: uppercase;
+  }
+  
+  .facebook-btn {
+    display: flex;
+    background-color: #3b5998;
+    justify-content: center;
+  }
+
+
+  .facebook-btn:hover {
+    background-color: #2d4373;
+  }
+  
+  .google-btn {
+    background-color: #142b4e;
+    /* background-image: url("https://woodmart.xtemos.com/wp-content/themes/woodmart/images/google-btn-icon.svg"); */
+    background-repeat: no-repeat;
+    background-position: 5%;
+  }
+  
+  .google-btn:hover {
+    background-color: #2d4373;
+  }
+  
+  .info-column {
+    width: 48%;
+    background-color: #fff;
+    padding: 30px;
+  }
+  
+  .info-column h4{
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .info-column h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  .info-column .logout{
+    color:rgba(131, 183, 53, 1); 
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .info-text {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+  
+  .switch-page-btn {
+    font-size: 14px;
+    color: rgba(131, 183, 53, 1); /* Green color */
+    text-decoration: none;
+  }
+  
+  .switch-page-btn:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .login-register-row {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+  
+    .form-column,
+    .info-column {
+      width: 100%;
+    }
+  
+    .form-heading,
+    .info-column h2 {
+      font-size: 20px;
+    }
+  
+    .form-input {
+      font-size: 14px;
+    }
+  
+    .form-btn {
+      font-size: 14px;
+    }
+  
+    .social-btn {
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .form-heading,
+    .info-column h2 {
+      font-size: 18px;
+    }
+  
+    .form-input {
+      font-size: 12px;
+    }
+  
+    .form-btn {
+      font-size: 14px;
+    }
+  
+    .social-btn {
+      font-size: 12px;
+    }
+  
+    .remember-label {
+      font-size: 12px;
+    }
+  
+    .lost-password {
+      font-size: 12px;
+    }
+  
+    .or-login p {
+      font-size: 12px;
+    }
+  }
+  

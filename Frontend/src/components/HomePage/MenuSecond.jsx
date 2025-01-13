@@ -96,7 +96,7 @@ const NewMenu = () => {
 
         {/* Separate Custom Dropdowns for Home, Shops, Blog, Pages, Elements */}
         <div className="dropdowns-container">
-          {["HOME", "SHOPS", "BLOG", "PAGES", "ELEMENTS"].map((item) => (
+          {["HOME", "SHOPS", "BLOG"].map((item) => (
             <div
               className="dropdown-item"
               key={item}
@@ -105,19 +105,18 @@ const NewMenu = () => {
             >
               <div className="custom-dropdown">
                 <button onClick={() => toggleDropdown(item)}>
-                  {item} <FaCaretDown />
+                  {item} 
                 </button>
-                {openDropdown === item && (
-                  <ul className="dropdown-options">
-                    <li>{item} Option 1</li>
-                    <li>{item} Option 2</li>
-                    <li>{item} Option 3</li>
-                  </ul>
+                {openDropdown === item && (<></>
+                  // <ul className="dropdown-options">
+                  //   <li>{item} Option 1</li>
+                  //   <li>{item} Option 2</li>
+                  //   <li>{item} Option 3</li>
+                  // </ul>
                 )}
               </div>
             </div>
           ))}
-          <a className="buy-btn">BUY</a>
         </div>
 
         {/* Special Offer and Purchase Theme Button */}

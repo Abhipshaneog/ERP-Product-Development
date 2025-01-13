@@ -1,0 +1,36 @@
+# schema.graphql
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  phoneNumber: String
+  address: JSON
+  profilePicture: String
+  role: String!
+  status: String!
+  emailVerified: Boolean
+  phoneVerified: Boolean
+  loyaltyPoints: Int
+  lastLogin: String
+  createdAt: String
+  updatedAt: String
+}
+
+type Admin {
+  id: ID!
+  userId: ID!
+  permissions: JSON
+  isSuperadmin: Boolean
+  user: User
+}
+
+type Query {
+  getUser(id: ID!): User
+}
+
+type Mutation {
+  login(email: String!, password: String!): String # Token after login
+  register(name: String!, email: String!, password: String!): String # Token after registration
+}
+
+scalar JSON
