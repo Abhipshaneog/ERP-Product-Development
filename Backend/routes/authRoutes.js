@@ -7,6 +7,7 @@ const logoutController = require("../controllers/authController/logoutController
 const googleLoginController = require("../controllers/authController/googleLoginController");
 const verifyTokens = require("../middlewares/tokenMiddleware");
 const checkIfUserLoggedIn = require("../middlewares/googleLoginMiddleware");
+const getDeviceInfo = require("../middlewares/deviceInfo");
 
 const {
   requestPasswordReset,
@@ -15,10 +16,10 @@ const {
 const router = express.Router();
 
 // Authentication Routes
-router.post("/login", verifyTokens, loginController.login);
-router.post("/register", verifyTokens, registerController.register);
-router.post("/logout", logoutController.logout);
-router.post("/google-login", checkIfUserLoggedIn, googleLoginController.login);
+router.post("/login",getDeviceInfo, verifyTokens, loginController.login);
+router.post("/register",getDeviceInfo, verifyTokens, registerController.register);
+router.post("/logout",getDeviceInfo, logoutController.logout);
+router.post("/google-login",getDeviceInfo, checkIfUserLoggedIn, googleLoginController.login);
 
 //password reset route
 router.post("/password-reset/request", requestPasswordReset);

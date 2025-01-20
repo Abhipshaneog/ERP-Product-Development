@@ -24,14 +24,15 @@ const login = [
       return res.status(400).json({ error: errors.array()[0].msg });
     }
 
-    const { email, password } = req.body;
+    const { email, password, deviceId, userAgent, ipAddress } = req.body;
+    console.log(ipAddress);
 
     try {
       // Call the service to handle the login logic
-      const { accessToken, refreshToken } = await loginService(email, password);
+      const { accessToken, refreshToken, device } = await loginService(email, password, deviceId, userAgent, ipAddress);
 
-      // Send the tokens to the client
-      res.status(200).json({ accessToken, refreshToken });
+      // Send the tokens and device info to the client
+      res.status(200).json({ accessToken, refreshToken, device });
     } catch (err) {
       console.error("Error during login:", err.message);
       res.status(500).json({ error: err.message });

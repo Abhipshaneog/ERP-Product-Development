@@ -22,16 +22,22 @@ const LoginRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    const deviceId = localStorage.getItem("deviceId") || generateDeviceId();
+    const userAgent = navigator.userAgent;
+  
     const url = isLoginPage
       ? "http://localhost:5000/api/auth/login"
       : "http://localhost:5000/api/auth/register";
-
+  
     const headers = {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("accessToken") || ""}`,
       "x-refresh-token": localStorage.getItem("refreshToken") || "",
+      "x-device-id": deviceId,  // Send deviceId in headers
+      "user-agent": userAgent,   // Send user agent in headers
     };
-
+  
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -40,11 +46,13 @@ const LoginRegister = () => {
           name: !isLoginPage ? formData.username : undefined,
           email: formData.email,
           password: formData.password,
+          deviceId: deviceId,
+          userAgent: userAgent,
         }),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
         setPopup({
           visible: true,
@@ -66,24 +74,33 @@ const LoginRegister = () => {
       console.error("Error:", error);
       setPopup({
         visible: true,
-        message: "An unexpected error occurred. Please try again.",
+        message: `An unexpected error occurred. Please try again.${error}`,
         type: "error",
       });
     }
   };
-
+  
   const handleLogout = async () => {
     try {
+      // Collect device information
+      const deviceInfo = {
+        userAgent: navigator.userAgent,  // Fetch user agent from the browser
+      };
+  
       const headers = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("accessToken") || ""}`,
         "x-refresh-token": localStorage.getItem("refreshToken") || "",
+        "x-device-id": localStorage.getItem("deviceId") || "",  // Send device ID in headers (same as login)
+        "user-agent": navigator.userAgent,   // Send user agent in headers
       };
+  
       const response = await fetch("http://localhost:5000/api/auth/logout", {
         method: "POST",
         headers,
+        body: JSON.stringify({ deviceInfo }),  // Send device info with logout request
       });
-
+  
       if (response.ok) {
         // Clear tokens from storage
         localStorage.clear();
@@ -110,38 +127,43 @@ const LoginRegister = () => {
       });
     }
   };
-
+  
+  
   const responseGoogle = async (response) => {
     try {
       if (response.tokenId) {
+        // Collect device information
+        const deviceInfo = {
+          userAgent: navigator.userAgent,  // Get user agent from the browser
+        };
+  
         const headers = {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken") || ""}`,
           "x-refresh-token": localStorage.getItem("refreshToken") || "",
+          "x-device-id": localStorage.getItem("deviceId") || generateDeviceId(),  // Send device ID (if available)
+          "user-agent": navigator.userAgent,
         };
-        // Send the Google token to the backend
+  
+        // Send the Google token and device info to the backend
         const res = await fetch("http://localhost:5000/api/auth/google-login", {
           method: "POST",
-          // headers: {
-          //   "Content-Type": "application/json",
-          // },
           headers,
-          body: JSON.stringify({ tokenId: response.tokenId }),
+          body: JSON.stringify({
+            tokenId: response.tokenId,
+            deviceInfo,  // Send device info with the request
+          }),
         });
-
+  
         const data = await res.json();
-        console.log(res);
-        console.log(data);
         if (res.ok) {
           setPopup({
             visible: true,
             message: data.message || "Google login successful!",
             type: "success",
           });
-          if (data.accessToken)
-            localStorage.setItem("accessToken", data.accessToken);
-          if (data.refreshToken)
-            localStorage.setItem("refreshToken", data.refreshToken);
+          if (data.accessToken) localStorage.setItem("accessToken", data.accessToken);
+          if (data.refreshToken) localStorage.setItem("refreshToken", data.refreshToken);
         } else {
           setPopup({
             visible: true,
@@ -165,6 +187,16 @@ const LoginRegister = () => {
       });
     }
   };
+  
+  
+
+  const generateDeviceId = () => {
+    const deviceId = `device-${Math.random().toString(36).substr(2, 9)}`;
+    localStorage.setItem("deviceId", deviceId);
+    return deviceId;
+  };
+
+
 
   const closePopup = () => {
     setPopup({ visible: false, message: "", type: "" });
@@ -232,10 +264,6 @@ const LoginRegister = () => {
             {isLoginPage && (
               <>
                 <div className="form-footer">
-                  {/* <label className="remember-me">
-                    <input type="checkbox" className="remember-checkbox" />
-                    Remember me
-                  </label> */}
                   <a href="/password-reset" className="lost-password">
                     Lost your password?
                   </a>

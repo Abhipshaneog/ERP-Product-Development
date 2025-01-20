@@ -30,13 +30,14 @@ const register = [
       return res.status(400).json({ error: errors.array()[0].msg });
     }
 
-    const { name, email, password } = req.body;
-    try {
-      // Call the service to handle user registration and token generation
-      const { accessToken, refreshToken } = await registerUser({ name, email, password });
+    const { name, email, password, deviceId, userAgent, ipAddress } = req.body;
 
-      // Return the tokens to the client
-      res.status(201).json({ accessToken, refreshToken });
+    try {
+      // Call the service to handle user registration, token generation, and device registration
+      const { accessToken, refreshToken, device } = await registerUser({ name, email, password, deviceId, userAgent, ipAddress });
+
+      // Return the tokens and device info to the client
+      res.status(201).json({ accessToken, refreshToken, device });
 
     } catch (err) {
       console.error('Error during registration:', err.message);

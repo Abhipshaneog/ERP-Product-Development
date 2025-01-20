@@ -8,19 +8,27 @@ const logout = async (req, res) => {
 
   // Check if both tokens are provided
   if (!accessToken || !refreshToken) {
-    console.log("entered>>>>>>>>>>>>>>>>>>>")
     return res.status(400).json({ message: 'Both access token and refresh token are required.' });
   }
 
   try {
-    
     // Find the refresh token in the database
     const existingToken = await prisma.refreshToken.findUnique({
       where: { token: refreshToken },
+      include: { device: true } // Include the associated device
     });
 
     if (!existingToken) {
       return res.status(400).json({ message: 'Invalid refresh token.' });
+    }
+
+    // Delete the device record if it exists and is associated with this refresh token
+    if (existingToken.device) {
+      console.log(existingToken);
+      await prisma.device.delete({
+        where: { id: existingToken.device.id },
+      });
+      console.log(`Device with ID ${existingToken.device.id} has been deleted.`);
     }
 
     // Delete the refresh token from the database
@@ -39,7 +47,7 @@ const logout = async (req, res) => {
       await redisClient.set(accessToken, 'blacklisted', 'PX', remainingTime); // Add to Redis with expiration
     }
 
-    res.status(200).json({ message: 'Logged out successfully.' });
+    res.status(200).json({ message: 'Logged out successfully and device record deleted.' });
   } catch (err) {
     console.error('Error during logout:', err);
     res.status(500).json({ message: 'Internal server error.' });

@@ -1,12 +1,13 @@
 const { OAuth2Client } = require('google-auth-library');
-const prisma = require("../../models/prisma/prismaClient"); 
+const prisma = require("../../models/prisma/prismaClient");
 const { generateTokens } = require("../../utils/tokenUtils");
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 // Google Login Logic
-const googleLogin = async (tokenId) => {
+const googleLogin = async (tokenId, userAgent, ipAddress) => {
   try {
-    // Verify the Google token using Google OAuth2 client (same as before)
+    // Verify the Google token using Google OAuth2 client
     const ticket = await client.verifyIdToken({
       idToken: tokenId,
       audience: process.env.GOOGLE_CLIENT_ID,
@@ -36,7 +37,7 @@ const googleLogin = async (tokenId) => {
     const { accessToken, refreshToken } = generateTokens(user.id);
 
     // Store the refresh token in the database
-    await prisma.refreshToken.create({
+    const refreshTokenRecord = await prisma.refreshToken.create({
       data: {
         token: refreshToken,
         userId: user.id,
@@ -44,11 +45,30 @@ const googleLogin = async (tokenId) => {
       },
     });
 
-    return { accessToken, refreshToken, user };
+    // Register the device (Create or Update)
+    const device = await prisma.device.upsert({
+      where: {
+        deviceId: refreshTokenRecord.id, // Use the refresh token id as device id
+      },
+      update: {
+        userAgent,
+        ipAddress,
+        refreshToken: refreshToken, // Associate the refresh token with the device
+      },
+      create: {
+        userId: user.id,
+        deviceId: refreshTokenRecord.id,
+        userAgent,
+        ipAddress,
+        refreshToken: refreshToken,
+      },
+    });
+
+    return { accessToken, refreshToken, user, device };
   } catch (error) {
     console.error("Error verifying Google token:", error);
     throw new Error("Invalid Google token.");
   }
 };
 
-module.exports={googleLogin}
+module.exports = { googleLogin };

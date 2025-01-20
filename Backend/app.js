@@ -28,7 +28,10 @@ app.use(morgan('combined', { stream: accessLogStream }));  // Logs to a file in 
 
 // Set additional middlewares
 app.use(helmet());
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://192.168.29.199:5173/my-account'],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session);
@@ -46,7 +49,7 @@ app.use((err, req, res, next) => {
 startServer(app).then(() => {
   // Start server after Apollo Server is set up
   const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0',() => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
 });

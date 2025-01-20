@@ -3,8 +3,11 @@ const { googleLogin } = require("../../services/authService/googleLoginService")
 const login = async (req, res) => {
   try {
     const { tokenId } = req.body; // Token sent from the client
+    const userAgent = req.headers['user-agent']; // Capture the user agent
+    const ipAddress = req.ip; // Capture the IP address of the client
+
     console.log(tokenId);
-    const { accessToken, refreshToken, user } = await googleLogin(tokenId);
+    const { accessToken, refreshToken, user, device } = await googleLogin(tokenId, userAgent, ipAddress);
 
     // Send the tokens and user data in the response
     return res.json({
@@ -15,6 +18,11 @@ const login = async (req, res) => {
         email: user.email,
         name: user.name,
         profilePicture: user.profilePicture,
+      },
+      device: {
+        deviceId: device.deviceId,
+        userAgent: device.userAgent,
+        ipAddress: device.ipAddress,
       },
     });
   } catch (error) {
