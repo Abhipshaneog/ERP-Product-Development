@@ -68,7 +68,13 @@ const RazorpayCheckoutButton = ({ user_id, address, setOrderData  }) => {
         order_id: razorpay_order_id,
         handler: function (response) {
           alert('Payment successful!');
-          console.log(response);
+          console.log("✅ Razorpay Response:", response);
+
+          // Assuming you already have access to the order object (from earlier axios call)
+          const orderId = order.order_id;
+
+          // Redirect to the order confirmation page
+          window.location.href = `/order-confirmation/${orderId}`;
         },
         prefill: {
           name: address.fullName,

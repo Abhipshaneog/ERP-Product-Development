@@ -1,18 +1,17 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { user_id } from '../../services/cartApi';
 import { useCart } from "../Context/CartContext";
 import "./ProductInfo.css";
 
-const ProductInfo = ({ product, productItems }) => {
+const ProductInfo = ({ product, productItems, setSelectedVariant, setIsAvailable, selectedVariant  }) => {
 
   const navigate = useNavigate(); 
   const { addItem } = useCart();  // Access addToCart function from context
   const [quantity, setQuantity] = useState(1); 
   const [selectedColor, setSelectedColor] = useState(null);
 const [selectedSize, setSelectedSize] = useState(null);
-const [selectedVariant, setSelectedVariant] = useState(null);
+//const [selectedVariant, setSelectedVariant] = useState(null);
 const [isAdding, setIsAdding] = useState(false);
 
 // Build variant availability map
@@ -42,10 +41,12 @@ const sizes = [...new Set(productItems.map(item => item.SizeOption?.size_name).f
           item.SizeOption?.size_name === selectedSize
       );
       setSelectedVariant(match|| null);
+      setIsAvailable(match?.qty_in_stocks > 0); 
     } else {
       setSelectedVariant(null);
+      setIsAvailable(false);
     }
-  }, [selectedColor, selectedSize, productItems]);
+  }, [selectedColor, selectedSize, productItems, setSelectedVariant, setIsAvailable, selectedVariant ]);
   
   
    const handleQuantityChange = (type) => {
@@ -61,21 +62,7 @@ const sizes = [...new Set(productItems.map(item => item.SizeOption?.size_name).f
     });
   };
 
-  const handleAddToCartAndNavigate = async () => {
-    if (!selectedVariant) {
-      alert("Please select a color and size first.");
-      return;
-    }
-  
-    try {
-      console.log("Adding item to cart...");
-      await addItem(selectedVariant.product_item_id, quantity);
-      console.log("Item added. Navigating...");
-      navigate(`/cart/${user_id}`);
-    } catch (err) {
-      console.error("Failed to add to cart:", err);
-    }
-  };
+
 
   const displayVariant = selectedVariant || productItems?.[0];
   const newPrice = displayVariant?.sale_price;
@@ -192,40 +179,41 @@ const sizes = [...new Set(productItems.map(item => item.SizeOption?.size_name).f
 
       <div className="quantity-sector">
       <div className="product-actions">
-        <button className="action-button">
-          <i className="fas fa-heart"></i> Add to Wishlist
-        </button>
-
       </div>
         <button onClick={() => handleQuantityChange("decrement")}  className="quantity-button" disabled={quantity <= 1}>-</button>
         <span className="quantity-display">{quantity}</span>
         <button onClick={() => handleQuantityChange("increment")}  className="quantity-button" disabled={
-    !selectedVariant || quantity >= selectedVariant.qty_in_stocks}>+</button>
-        <button 
-          className="add-to-cart-btn" 
-          onClick={handleAddToCartAndNavigate}
-          disabled={!selectedVariant  || !isAvailable} >
-        {isAdding ? "ADDING..." : "ADD TO CART"}
-      </button>
+    !selectedVariant || quantity >= selectedVariant.qty_in_stocks}>+</button>        
       </div>
      
-
-      {/*!-- Compare, Wishlist, Size Guide --*/}
- 
+ {/* Available Offers Section */}
+      <div className="available-offers">
+        <h4>Available Offers:</h4>
+        <ul>
+          <li>5% discount using ABC Credit Cards</li>
+          <li>Buy 2, Get 1 Free</li> {/* Example for other offers */}
+        </ul>
+      </div>
   {/*!-- SKU and Categories --*/}
-  <div className="product-meta">
+  <div className="product-details">
+    <h4>Product Details:</h4>
     <p><strong>Brand:</strong> {product.Brand?.brand_name}</p>
     <p><strong>Category:</strong> {product.ProductCategory?.category_name}</p>
   </div>
 
-  {/*!-- Share Section --*/}
-  <div className="share-section">
-  <p><strong>Share:</strong></p>
-    <a href="#" className="share-icon"><i className="fab fa-facebook"></i></a>
-    <a href="#" className="share-icon"><i className="fab fa-twitter"></i></a>
-    <a href="#" className="share-icon"><i className="fab fa-linkedin"></i></a>
-    <a href="#" className="share-icon"><i className="fab fa-pinterest"></i></a>
-  </div>
+   {/* Delivery Information */}
+      <div className="delivery-info">
+        <h4>Delivery Information:</h4>
+        <p><strong>Pin Code:</strong> 566068</p>
+        <p><strong>Delivery Time:</strong> 2 days</p>
+      </div>
+
+      {/* About the Item */}
+      <div className="about-item">
+        <h4>About the Item:</h4>
+        <p>{product.product_description}</p>
+      </div>
+
     </div>
   );
 };
@@ -234,6 +222,7 @@ ProductInfo.propTypes = {
   product: PropTypes.shape({
     product_id: PropTypes.string.isRequired,
     product_name: PropTypes.string.isRequired,
+    product_description: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
     Brand: PropTypes.shape({
       brand_name: PropTypes.string,
@@ -256,6 +245,12 @@ ProductInfo.propTypes = {
       }),
     })
   ).isRequired,
+     setSelectedVariant: PropTypes.func.isRequired, 
+  setIsAvailable: PropTypes.func.isRequired,  
+  selectedVariant: PropTypes.shape({
+    qty_in_stocks: PropTypes.number,
+    product_item_id: PropTypes.string,
+  }),
 
   };
 

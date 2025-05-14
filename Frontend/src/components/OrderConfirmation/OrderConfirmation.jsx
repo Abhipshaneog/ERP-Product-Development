@@ -1,4 +1,61 @@
-import React, { useEffect, useState } from "react";
+
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import './OrderConfirmation.css';
+
+const OrderConfirmation = () => {
+  const { order_id } = useParams();
+  const navigate = useNavigate();
+  const [order, setOrder] = useState(null);
+  const user_id = '6f94aefc-36a1-4e7d-8c7f-2a81bbffb002'; 
+
+  useEffect(() => {
+    axios.get(`/api/v1/orders/${order_id}`)
+      .then(res => setOrder(res.data.data))
+      .catch(err => console.error(err));
+  }, [order_id]);
+
+  if (!order) return <p>Loading...</p>;
+  const items = order.OrderItems || [];
+
+  return (
+    <div className="order-confirmation">
+       <div className="confirmation-message">
+        <h2>✅ Your Order Confirmed</h2>
+        <p>Thank you for shopping with us, your order detail below</p>
+      </div>
+      <table className="product-table">
+        <thead>
+          <tr><th>Product</th><th>Quantity</th><th>Total</th></tr>
+        </thead>
+        <tbody>
+          {items.map(item => (
+            <tr key={item.order_item_id}>
+              <td><img src={item.image_url || '/placeholder.jpg'} width="60" alt={item.product_name}/> {item.product_name}</td>
+              <td>{item.quantity}</td>
+              <td>${item.item_total}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div className="price-summary">
+        <p><b>Total Price:</b> ${order.total_amount}</p>
+        <p><b>Payment Method:</b> {order.payment_method}</p>
+        <p><b>Shipping Address:</b> {order.shipping_address}</p>
+      </div>
+
+      <div className="actions">
+      <button className="detail-btn" onClick={() => navigate(`/orders?user_id=${user_id}`)}>View My Orders</button>
+      </div>
+    </div>
+  );
+};
+
+export default OrderConfirmation;
+
+/*import React, { useEffect, useState } from "react";
 import AddressSection from "./AddressSection";
 import "./OrderConfirmation.css";
 import OrderConfirmationMessage from "./OrderConfirmationMessage";
@@ -36,7 +93,7 @@ const OrderConfirmation = () => {
 
   return (
     <div className="order-confirmation">
-      {/* Confirmation Message */}
+      {/* Confirmation Message 
       <OrderConfirmationMessage />
       <OrderSummary
         orderId={orderData.orderId}
@@ -45,13 +102,14 @@ const OrderConfirmation = () => {
         paymentMethod={orderData.paymentMethod}
       />
 
-      {/* Order Details */}
+      {/* Order Details 
       <OrderDetails products={orderData.products} total={orderData.total} paymentMethod={orderData.paymentMethod} />
 
-      {/* Address Section */}
+      {/* Address Section
       <AddressSection  shippingAddress={orderData.shippingAddress} />
     </div>
   );
 };
 
 export default OrderConfirmation;
+*/
