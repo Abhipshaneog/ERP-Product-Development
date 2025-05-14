@@ -1,5 +1,5 @@
 // graphql/index.js
-const { ApolloServer } = require('apollo-server-express');
+const { ApolloServer } = require('@apollo/server');
 const { loadSchemaSync } = require('@graphql-tools/load');
 const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
 const authResolvers = require('./resolvers/authResolvers');
