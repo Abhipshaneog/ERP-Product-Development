@@ -9,6 +9,7 @@ const connectDB = require('./config/db');
 const session = require('./config/sessionStore');
 const startServer = require('./graphql'); 
 const authRoutes = require('./routes/authRoutes');
+const productRoutes = require("./routes/productRoutes");
 
 // Load environment variables
 dotenv.config();
@@ -38,6 +39,7 @@ app.use(session);
 
 // Route middlewares
 app.use('/api/auth', authRoutes);
+app.use("/api/products", productRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
