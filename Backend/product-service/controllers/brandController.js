@@ -27,7 +27,8 @@ exports.getBrandById = async (req, res) => {
 // CREATE a new brand
 exports.createBrand = async (req, res) => {
   try {
-
+    console.log("BODY:", req.body);   
+    console.log("FILE:", req.file);   
     const { brand_name, brand_description } = req.body;
     const brand_image_url = req.file ? req.file.location : null; // Get S3 URL
     const newBrand = await brandService.createBrand({

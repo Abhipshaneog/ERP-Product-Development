@@ -30,7 +30,7 @@ const upload = (type) => {
   storage: multerS3({
     s3,
     bucket: bucketName,
-   // acl: "public-read", // Allows public access
+    //acl: "public-read", // Allows public access
     contentType: multerS3.AUTO_CONTENT_TYPE, // Automatically set content type
     key: function (req, file, cb) {
       try {
