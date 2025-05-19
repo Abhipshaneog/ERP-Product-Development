@@ -2,16 +2,19 @@
 import PropTypes from 'prop-types';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
-import { addToCart, clearCart, fetchCart, removeCartItem, updateCartItem, user_id } from '../../services/cartApi';
+import { addToCart, addToWishlist, clearCart, fetchCart, fetchWishlist, moveWishlistItemToCart, removeCartItem, removeFromWishlist, updateCartItem, user_id } from '../../services/cartApi';
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState({ CartItems: [] });
-  const [loading, setLoading] = useState(true);
+  const [wishlist, setWishlist] = useState({ WishlistItems: [] });
+  const [cartLoading, setCartLoading] = useState(true);
+  const [wishlistLoading, setWishlistLoading] = useState(true);
+  
   //const storedUserId = localStorage.getItem("user_id");
 
   const loadCart = async () => {
-    setLoading(true);
+    setCartLoading(true);
     try {
       const data = await fetchCart(user_id);
       setCart(data || { CartItems: [] });
@@ -24,12 +27,30 @@ export const CartProvider = ({ children }) => {
         // For other errors, show toast
         console.error("Failed to fetch cart:", error);
         toast.error("Failed to load cart. Please try again.");
-      }
+      } 
+    }
+    finally {
+      setCartLoading(false);
+    }
+  };
+  const loadWishlist = async () => {
+    setWishlistLoading(true);
+    try {
+      const data = await fetchWishlist();
+      console.log("Fetched wishlist data:", data);
+      setWishlist(data || { WishlistItems: [] });
+    } catch (error) {
+      console.error('Failed to fetch wishlist:', error);
+      toast.error('Failed to load wishlist ❌');
+    }
+    finally {
+      setWishlistLoading(false); // ✅ END loading
     }
   };
 
   useEffect(() => {
     loadCart();
+    loadWishlist();
   }, []);
 
   const addItem = async ( product_item_id, quantity) => {
@@ -74,6 +95,41 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const addWishlistItem = async (product_item_id, product_id) => {
+    try {
+      const updated = await addToWishlist(product_item_id, product_id);
+      setWishlist(updated || { WishlistItems: [] });
+      toast.success('Added to wishlist ❤️');
+    } catch (error) {
+      toast.error('Failed to add to wishlist ❌');
+      console.error('Add to wishlist failed:', error);
+    }
+  };
+  
+  const removeWishlistItem = async (wishlist_item_id) => {
+    try {
+      const updated = await removeFromWishlist(wishlist_item_id);
+      setWishlist(updated || { WishlistItems: [] });
+      toast.warn('Removed from wishlist 🗑️');
+    } catch (error) {
+      toast.error('Failed to remove wishlist item ❌');
+      console.error('Remove from wishlist failed:', error);
+    }
+  };
+  
+  const moveToCartFromWishlist = async (wishlist_item_id) => {
+    try {
+      const updated = await moveWishlistItemToCart(wishlist_item_id);
+      setCart(updated.cart || { CartItems: [] });
+      setWishlist(updated.wishlist || { WishlistItems: [] });
+      toast.info('Moved to cart 🛒');
+    } catch (error) {
+      toast.error('Failed to move to cart ❌');
+      console.error('Move to cart failed:', error);
+    }
+  };
+  
+
   const refreshCart = loadCart;
 
   const isCartEmpty = !cart || (cart.CartItems || []).length === 0;
@@ -81,18 +137,30 @@ export const CartProvider = ({ children }) => {
   const cartItemCount = useMemo(() => {
     return (cart?.CartItems || []).reduce((total, item) => total + item.quantity, 0);
   }, [cart]);
+  const wishlistItemCount = useMemo(() => {
+    return (wishlist?.WishlistItems || []).length;
+  }, [wishlist]);
+  
   
 
   return (
-    <CartContext.Provider value={{ cart,
-      loading,
+    <CartContext.Provider value={{ 
+      cart,
+      wishlist,
+      loading: { cartLoading, wishlistLoading },
+      cartItemCount,
       addItem,
       updateItem,
       removeItem,
       clear,
       refreshCart,
       isCartEmpty,
-      cartItemCount
+      //cartItemCount,
+      addWishlistItem,
+      removeWishlistItem,
+      moveToCartFromWishlist,
+      wishlistItemCount,
+      refreshWishlist: loadWishlist
        }}>
       {children}
     </CartContext.Provider>

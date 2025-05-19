@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { fetchProductById } from "../../services/api";
+import SuggestedProducts from "../Homepage/components/SuggestedProducts";
+import YouMayAlsoLikeProducts from "../Homepage/components/YouMayAlsoLikeProducts";
 import "./ProductDetails.css";
 import ProductImages from "./ProductImages";
 import ProductInfo from "./ProductInfo";
-import RelatedProducts from "./RelatedProducts";
 import Tabs from "./Tab";
-import YouMayAlsoLike from "./YouMayAlsoLike";
 
 const ProductDetails = () => {
   
   const {id} = useParams();
   const [product, setProduct] = useState(null);
+  const [selectedVariant, setSelectedVariant] = useState(null);  // Define the setter
   const [selectedImage, setSelectedImage] = useState("");
+  const [isAvailable, setIsAvailable] = useState(false);  // Define the setter
   const [activeTab, setActiveTab] = useState("description");
   const [loading, setLoading] = useState(true);
  
@@ -68,70 +70,62 @@ const allImages = product?.productItems?.flatMap((item) =>
 ).filter(Boolean) || [];
 
 
-  const relatedProducts = [
-    {
-      id: 1,
-      name: "Product 1",
-      img: "https://woodmart.b-cdn.net/wp-content/uploads/2016/08/product-accessories-1-2-430x491.jpg",
-      price: "$359",
-    },
-    {
-      id: 2,
-      name: "Product 2",
-      img: "https://woodmart.b-cdn.net/wp-content/uploads/2016/08/product-accessories-10-2-430x491.jpg.webp",
-      price: "$89",
-    },
-    {
-      id: 3,
-      name: "Product 3",
-      img: "https://woodmart.b-cdn.net/wp-content/uploads/2016/08/product-accessories-5-1-430x491.jpg",
-      price: "$259",
-    },
-    {
-        id: 4,
-        name: "Product 4",
-        img: "https://woodmart.b-cdn.net/wp-content/uploads/2016/09/toys10_3-430x490.jpg",
-        price: "$199",
-      },
-  ];
-
-  const youMayAlsoLikeProducts = relatedProducts;
-
   return (
     <div className="product-details-page">
       <div className="product-container">
+        <div className="breadcrumb-product-container">
+       <div className="breadcrumb-container">
+        <nav aria-label="Breadcrumb">
+          <ol className="breadcrumb-list">
+            <li><Link to="/">Home</Link></li>
+            <li><span>&gt;</span></li>
+            <li><Link to="/shopping-page">Shopping Page</Link></li>
+            <li><span>&gt;</span></li>
+            <li>
+              <Link to={`/product-details/${product.product_id}`}>
+                {product.product_name}
+              </Link>
+            </li>
+          </ol>
+        </nav>
+      </div>
+
         <ProductImages
           images={allImages}
           selectedImage={selectedImage}
           setSelectedImage={setSelectedImage}
+          product={product}
+          selectedVariant={selectedVariant}  // Pass selected variant
+          isAvailable={isAvailable}  // Pass availability status
            
         />
+        </div>
         <ProductInfo
           product={product}
           productItems={product.productItems}
+          setSelectedVariant={setSelectedVariant}  // Update the variant in the parent component
+          setIsAvailable={setIsAvailable} 
+          selectedVariant={selectedVariant}
         />
       </div>
 
       {/* Tabs Section */}
-      <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Tabs 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab} 
+        productId={id} 
+        product={product} 
+      />
 
-      <YouMayAlsoLike products={youMayAlsoLikeProducts} />
-      <RelatedProducts products={relatedProducts} />
+      <YouMayAlsoLikeProducts />
+      <SuggestedProducts />
 
 
 
     </div>
 
-    
-    
-  
-);
-  
-};
-
-
-
-
+         );
+  };
 export default ProductDetails;
   
 

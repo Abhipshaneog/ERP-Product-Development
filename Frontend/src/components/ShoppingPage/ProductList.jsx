@@ -1,21 +1,19 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { FaTh, FaThLarge, FaThList } from 'react-icons/fa';
 //import { useNavigate } from "react-router-dom";
-import { fetchAllProducts } from "../../services/api";
+import { fetchAllProducts, fetchProductsByCategory } from "../../services/api";
 import ProductCard from "./ProductCard";
 import './ProductList.css';
 
-const ProductList = ({ price, color, size, brand, filterStatus, viewMode, sortOption, setSortOption, toggleSidebar }) => {
+const ProductList = ({ price, color, size, brand, filterStatus, viewMode, sortOption, setSortOption, toggleSidebar, selectedCategory  }) => {
   
   //const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   //const [selectedStatus, setSelectedStatus] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(6);
-  const [currentViewMode, setCurrentViewMode] = useState(viewMode || "grid-4");
+  const itemsPerPage = 9;
 
-  // Fetch products from backend on mount
+  /* Fetch products from backend on mount
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -26,18 +24,23 @@ const ProductList = ({ price, color, size, brand, filterStatus, viewMode, sortOp
       }
     };
     getProducts();
-  }, []);
-  
+  }, []);*/
   useEffect(() => {
-    const itemsPerView = {
-      "grid-2": 2 * 3, // 2 columns, 3 rows
-      "grid-3": 3 * 3, // 3 columns, 3 rows
-      "grid-4": 4 * 3, // 4 columns, 3 rows
-      "list": 6, // List view 
+    const getProducts = async () => {
+      try {
+        let data;
+        if (selectedCategory && selectedCategory !== "All Categories") {
+          data = await fetchProductsByCategory(selectedCategory);
+        } else {
+          data = await fetchAllProducts();
+        }
+        setProducts(data);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+      }
     };
-    setItemsPerPage(itemsPerView[currentViewMode] || 6);
-    setCurrentPage(1); // Reset to first page when viewMode changes
-  }, [currentViewMode]);
+    getProducts();
+  }, [selectedCategory]);
 
   // Filter logic based on backend schema
   const filteredProducts = products.filter((product) => {
@@ -83,49 +86,11 @@ const ProductList = ({ price, color, size, brand, filterStatus, viewMode, sortOp
     setCurrentPage(page);
   };
 
-  const gridStyle = {
-    "list": { display: "block" },
-    "grid-2": { display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "20px" },
-    "grid-3": { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" },
-    "grid-4": { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px" },
-  };
-
   return (
     <div className="container">
-      <div className="toolbar">
-        {/* View Toggle Buttons */}
-        <div className="view-toggle">
-          <button onClick={() => setCurrentViewMode("list")}>
-            <FaThList className="fa-icon" title="List View" />
-          </button>
-          <button onClick={() => setCurrentViewMode("grid-2")}>
-            <FaThLarge className="fa-icon" title="Grid-2" />
-          </button>
-          <button onClick={() => setCurrentViewMode("grid-3")}>
-            <FaTh className="fa-icon" title="Grid-3" />
-          </button>
-          <button onClick={() => setCurrentViewMode("grid-4")}>
-            <FaTh className="fa-icon" title="Grid-4" />
-          </button> 
-        </div>
 
-        <div className="sorting">
-          <label>Sort By: </label>
-          <select
-            onChange={(e) => setSortOption(e.target.value)}
-            value={sortOption}
-            className="dropdown"
-          >
-            <option value="default">Default Sorting</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="name-asc">Name: A to Z</option>
-            <option value="name-desc">Name: Z to A</option>
-          </select>
-        </div>
-      </div>
 
-      <div className="product-list" style={gridStyle[currentViewMode]}>
+      <div className="product-list">
         {currentProducts.length > 0 ? (
           currentProducts.map((product) => (
             <ProductCard key={product.product_id} product={product} />
@@ -138,14 +103,13 @@ const ProductList = ({ price, color, size, brand, filterStatus, viewMode, sortOp
       <div className="pagination">
         {Array.from({ length: totalPages }, (_, index) => (
           <button
-            key={index}
-            onClick={() => handlePageChange(index + 1)}
-            style={{             
-              color: currentPage === index + 1 ? "green" : "black",
-            }}
-          >
-            {index + 1}
-          </button>
+          key={index}
+          onClick={() => handlePageChange(index + 1)}
+          className={currentPage === index + 1 ? "active" : ""}
+        >
+          {index + 1}
+        </button>
+        
         ))} 
       </div>
     </div>
@@ -163,6 +127,7 @@ ProductList.propTypes = {
   sortOption: PropTypes.string.isRequired,
   setSortOption: PropTypes.func.isRequired,
   toggleSidebar: PropTypes.func.isRequired,
+  selectedCategory: PropTypes.string,
 };
 
 export default ProductList;

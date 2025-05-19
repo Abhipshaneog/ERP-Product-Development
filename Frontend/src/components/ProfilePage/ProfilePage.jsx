@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Wishlist from '../Wishlist/Wishlist';
 import CouponsSection from './CouponsSection';
 import DeleteAccount from './DeleteAccount';
 import ManageAddress from './ManageAddress';
@@ -8,7 +9,6 @@ import Reviews from './Reviews';
 import SavedCards from './SavedCards';
 import SavedUPI from './SavedUPI';
 import Sidebar from './Sidebar';
-import Wishlist from './Wishlist';
 
 const ProfilePage = () => {
     const [selectedTab, setSelectedTab] = useState('Profile Information');

@@ -1,15 +1,17 @@
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../Context/CartContext";
 import "./ProductCard.css";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product , isCarousel = false}) => {
   const navigate = useNavigate();
-  const { addItem } = useCart();
+  const { addItem, addWishlistItem, removeWishlistItem, wishlist } = useCart();
   const item = product.ProductItems?.[0];
   const image = item?.ProductImages?.[0]?.image_url;
   const stock = item?.qty_in_stocks || 0;
+  const [inWishlist, setInWishlist] = useState(false);
 
   const handleAddToCart = async (e) => {
     e.stopPropagation();
@@ -25,17 +27,35 @@ const ProductCard = ({ product }) => {
     }
   };
 
-  const handleWishlist = (e) => {
+  const handleWishlist = async (e) => {
     e.stopPropagation();
-    alert("Added to wishlist!"); 
+    const wishlistItem = wishlist?.WishlistItems?.find(
+      (wishlistItem) => wishlistItem.product_item_id === item.product_item_id
+    );
+  
+    if (wishlistItem) {
+      // Product is already in wishlist — remove using the actual wishlist_item_id
+      await removeWishlistItem(wishlistItem.id);
+    } else {
+      // Product not in wishlist — add it
+      await addWishlistItem(item.product_item_id, product.product_id);
+    }
   };
+  
+  
+  useEffect(() => {
+    const exists = wishlist?.WishlistItems?.some(
+      (wishlistItem) => wishlistItem.product_item_id === item.product_item_id
+    );
+    setInWishlist(exists);
+  }, [wishlist, item.product_item_id]);
 
   console.log("Selected item:", item);
 
 
   return (
     <div
-      className={`product-card ${stock === 0 ? "out-of-stock" : ""}`}
+      className={`product-card  ${isCarousel ? "carousel-card" : ""} ${stock === 0 ? "out-of-stock" : ""}`}
       onClick={() => navigate(`/product-details/${product.product_id}`)}
     >
       <div className="product-image">
@@ -60,7 +80,8 @@ const ProductCard = ({ product }) => {
         </div>
         <div className="icon-overlay">
         <button className="icon-btn" onClick={handleWishlist}>
-            <FaHeart className="wishlist-icon" />
+        <FaHeart className={`wishlist-icon ${inWishlist ? "added" : ""}`} />
+
             </button>
             <button className="select-options-btn">Select Options</button>
             <button className="icon-btn" onClick={handleAddToCart}>
@@ -92,6 +113,7 @@ ProductCard.propTypes = {
         })
       ),
     }).isRequired,
+    isCarousel: PropTypes.bool,
   };
   
 

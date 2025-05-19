@@ -5,8 +5,9 @@
     align-items: flex-start;
     max-width: 100%;
     width: 100%;
-    margin: 5px auto;
-    gap: 5px;
+    margin: 1.5rem;
+    gap: 4px;
+    
   }
   
   .thumbnail-column {
@@ -15,6 +16,7 @@
     gap: 5px;
     height:555px;
     max-width: 500px;
+    overflow-y: auto;
   }
   
   .thumbnail {
@@ -28,17 +30,19 @@
     transition: transform 0.5s ease, border 0.5s ease;
   }
   
-  .thumbnail:hover {
-    transform: scale(1.2); /* Slight zoom on hover */
-    border: 2px solid #d6d7d6; /* Highlight border */
-  }
-  
-  .thumbnail.active {
-    border: 2px solid #d6d7d6;
-  }
-  
-  .main-image-container {
-    position: relative;
+  .thumbnail:hover,
+.thumbnail.active {
+  transform: scale(1.05);
+  border-color: var(--muted-color);
+}
+  .main-image-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+ .main-image-container {
+   position: relative;
     display: flex;
   justify-content: center;
    align-items: center;
@@ -46,6 +50,8 @@
    border-radius: 10px;
     overflow: hidden;
     max-width: 100%;
+      background-color: var(--white);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
   
   .main-image {
@@ -69,14 +75,15 @@
   .slider-button {
     position: absolute;
     top: 50%;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
+    background-color:  rgba(30, 42, 56, 0.6);
+    color:  var(--white);
     border: none;
-    padding: 10px 20px;
+    padding: 4px 8px;
     cursor: pointer;
     transform: translateY(-50%);
     z-index: 10;
     border-radius: 5px;
+    font-size: 1rem;
   }
   
   .slider-button.previous {
@@ -88,103 +95,141 @@
   }
   
   .slider-button:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(30, 42, 56, 0.85);
   }
-  
-  * {
-  box-sizing: border-box;
+  .action-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin-top: 1rem;
+  width: 100%;
 }
 
-.container, .main-image-container, .thumbnail-column {
-  overflow: hidden; /* Prevent overflow issues */
+.action-buttons .icon-btn,
+.action-buttons .buy-now {
+  flex: 1; /* Equal width */
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 1.5px solid var(--highlight-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* soft shadow */
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  transition: all 0.3s ease;
 }
-  
+.add-cart-icon{
+  color: var(--primary-color);
+}
+.add-cart-icon:hover{
+  background:transparent;
+}
+
+.icon-btn {
+  background-color: var(--white);
+  color: var(--primary-color);
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background-color 0.3s ease;
+}
+
+.icon-btn:hover {
+   background-color: var(--accent-color);
+}
+
+.buy-now {
+  background-color: var(--white);
+}
+
+.buy-now:hover {
+  background-color: var(--accent-color);
+}
+
+/* Wishlist Icon */
+.wishlist-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: var(--muted-color);
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 10;
+  transition: color 0.3s ease;
+}
+
+.wishlist-icon.added {
+  color: red;
+}
+
+/* Responsive Styles */
 @media (max-width: 1024px) {
   .product-images {
-    display:flex;
-    justify-content: flex-start;
-    width: 100%;
-      flex-direction: column;
-      align-items: center;
-      margin-left: 15px;
-      gap: 10px;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 1rem;
+    gap: 1rem;
   }
 
-  .main-image-container {
-      max-width: 100%;
-  }
-
-  .main-image {
-      height: 500px;
-  }
   .thumbnail-column {
-    display: flex;
-    flex-direction: row; /* Show thumbnails horizontally */
-    gap: 5px;
+    flex-direction: row;
     overflow-x: auto;
-    justify-content: flex-start;
+    height: auto;
     width: 100%;
-    height:auto;
   }
 
   .thumbnail {
-      width: 150px;
-      height: 150px;
+    width: 150px;
+    height: 150px;
+  }
+
+  .main-image {
+    height: 500px;
   }
 }
 
-
-  @media (max-width: 768px) {
-
-    
-    .product-images {
-      flex-direction: column;
-      align-items: center;
-     
-      margin: 0; /* Center content */
-      width: 100%;
-      gap: 5px;
-    }
-  
-    .main-image-container {
-     
-      max-width: 100%; /* Utilize full width */
-      
-      height: 350px;
-      aspect-ratio: 1 / 1;
-  
-    }
-    .main-image {
-      width: 100%;
-      max-height: 400px; /* Further restrict height */
-      object-fit: contain;
-    }
-  
-    .thumbnail-column {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      gap: 5px;
-      overflow-x: auto;
-      width: 100%;
-      height: 120px;
-      margin-top: 10px;
-    }
-  
-    .thumbnail {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 1px;
-    transition: transform 0.5s ease;
-    }
-
-    .thumbnail:hover {
-      transform: scale(1.1); 
-    }
-    .slider-button {
-      padding: 5px 10px;
-      font-size: 14px;
-    }
+@media (max-width: 768px) {
+  .product-images {
+    margin: 0;
+    gap: 0.75rem;
   }
-  
+
+  .main-image-container {
+    height: 350px;
+    aspect-ratio: 1 / 1;
+  }
+
+  .main-image {
+    max-height: 400px;
+    object-fit: contain;
+  }
+
+  .thumbnail-column {
+    height: 120px;
+    margin-top: 0.5rem;
+  }
+
+  .thumbnail {
+    width: 120px;
+    height: 120px;
+  }
+
+  .slider-button {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Utility */
+* {
+  box-sizing: border-box;
+}
+
+.container,
+.main-image-container,
+.thumbnail-column {
+  overflow: hidden;
+}

@@ -1,97 +1,220 @@
-// Tabs.jsx
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import StarRating from './StarRating';
 import './Tab.css';
 
-const Tabs = ({ activeTab, setActiveTab }) => {
-  const tabs = [
-    { id: "description", label: "Description", content: (
-      <div>
-        
-        <p>
-          Cubilia vestibulum interdum nisl a parturient a auctor vestibulum taciti vel bibendum tempor adipiscing suspendisse posuere libero penatibus lorem at interdum tristique iaculis redosan condimentum a ac rutrum mollis consectetur.
-        </p>
-        <p>
-          Netus nisi volutpat donec condimentum nunc eu sem odio condimentum hendrerit nisl mollis scelerisque ad vitae a eu.
-        </p>
-        <p>Cubilia vestibulum interdum nisl a parturient a auctor vestibulum taciti vel bibendum tempor adipiscing suspendisse posuere libero penatibus lorem at interdum tristique iaculis redosan condimentum a ac rutrum mollis consectetur. 
-          Aenean nascetur vehicula egestas a adipiscing a est egestas suspendisse parturient diam adipiscing mattis elementum velit pulvinar suscipit sagittis facilisis facilisi tortor morbi at aliquam. Netus nisi volutpat donec condimentum nunc eu sem odio 
-          condimentum hendrerit nisl mollis scelerisque ad vitae a eu. Etiam dictumst congue a non class risus sed a. Diam adipiscing a condimentum in a nisl a maecenas libero pharetra tincidunt phasellus justo molestie bibendum. Vestibulum penatibus vestibulum lobortis vehicula 
-          euismod a platea taciti a eget in nec cum eget curabitur justo id enim mi velit at cum. Eu amet ut elit a sociis himenaeos eros nunc at pharetra magna suscipit.
-          </p>
-
-      </div>
-    ) },
-    { id: "additionalInfo", label: "Additional Information", content: (
-      <div>
-        
-        <ul>
-          <li>Color: Beige, Black</li>
-          <li>Brand: Eva Solo</li>
-          <li>Thickness: 0.39</li>
-          <li>Diameter: 1.58</li>
-          <li>Strap Size: Unisex</li>
-        </ul>
-      </div>
-    )  },
-    { id: "reviews", label: "Reviews", content: (
-      <div>
-       
-        <p>No reviews yet. Be the first to write one!</p>
-      </div>
-    )  },
-    { id: "aboutBrand", label: "About Brand" , content: (
-      <div>
-      
-        <p>Information about the brand, its history, and mission.</p>
-      </div>
-    ) },
-    { id: "shipping", label: "Shipping & Delivery" , content: (
-      <div>
-        
-        <p>Details about shipping timelines and policies.</p>
-      </div>
-    ) },
-  ];
-
+const Tabs = ({ activeTab, setActiveTab, productId, product }) => {
+  const [reviews, setReviews] = useState([]);
+  const [newReview, setNewReview] = useState({
+    rating: 0,
+    comment: '',
+    name: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [openTab, setOpenTab] = useState(null);
 
+  // Fetch reviews when tab mounts or product changes
   useEffect(() => {
-    // Ensure default desktop tab is 'Description'
-    const handleResize = () => {
-    if (window.innerWidth > 1024) {
-      setActiveTab("description");
-      setOpenTab(null);
+    const fetchReviews = async () => {
+      try {
+        // Simulated API call - replace with your actual API endpoint
+        const mockReviews = [
+          {
+            id: "1",
+            name: "Alex Johnson",
+            rating: 5,
+            comment: "Excellent product quality and fast shipping!",
+            date: new Date().toISOString()
+          },
+          {
+            id: "2",
+            name: "Sam Wilson",
+            rating: 4,
+            comment: "Good value for money, but packaging could be better",
+            date: new Date(Date.now() - 86400000).toISOString() // 1 day ago
+          }
+        ];
+        setReviews(mockReviews);
+      } catch (error) {
+        console.error("Failed to fetch reviews:", error);
+      }
+    };
+
+    if (activeTab === 'reviews') fetchReviews();
+  }, [activeTab, productId]);
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    try {
+      // Simulate API post - replace with actual API call
+      setTimeout(() => {
+        const submittedReview = {
+          id: Math.random().toString(36).substring(2, 9),
+          ...newReview,
+          date: new Date().toISOString()
+        };
+        
+        setReviews([submittedReview, ...reviews]);
+        setNewReview({ rating: 0, comment: '', name: '' });
+        setIsSubmitting(false);
+      }, 1000);
+    } catch (error) {
+      console.error("Failed to submit review:", error);
+      setIsSubmitting(false);
     }
   };
-  handleResize(); // Set initial state
+
+  // Calculate average rating
+  const averageRating = reviews.length > 0 
+    ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1)
+    : 0;
+
+  const tabs = [
+    { 
+      id: "description", 
+      label: "Description", 
+      content: (
+        <div>
+          <p>{product?.product_description || 'No description available'}</p>
+        </div>
+      ) 
+    },
+    { 
+      id: "additionalInfo", 
+      label: "Additional Info", 
+      content: (
+        <div>
+          <ul>
+            <li>Brand: {product?.Brand?.brand_name || 'N/A'}</li>
+            <li>Category: {product?.ProductCategory?.category_name || 'N/A'}</li>
+            {product?.weight && <li>Weight: {product.weight} kg</li>}
+            {product?.dimensions && <li>Dimensions: {product.dimensions}</li>}
+          </ul>
+        </div>
+      ) 
+    },
+    { 
+      id: "reviews", 
+      label: `Reviews (${reviews.length})`, 
+      content: (
+        <div className="reviews-tab">
+          <div className="rating-summary">
+            <h3>Average Rating: {averageRating} ★</h3>
+            <div className="rating-distribution">
+              {[5, 4, 3, 2, 1].map((stars) => {
+                const count = reviews.filter(r => Math.floor(r.rating) === stars).length;
+                return (
+                  <div key={stars} className="rating-bar">
+                    <span>{stars} ★</span>
+                    <progress 
+                      value={count} 
+                      max={reviews.length || 1} 
+                    />
+                    <span>({count})</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmitReview} className="review-form">
+            <h3>Add Your Review</h3>
+            <div className="form-group">
+              <label>Your Rating:</label>
+              <StarRating 
+                rating={newReview.rating}
+                onRatingChange={(rating) => setNewReview({...newReview, rating})}
+              />
+            </div>
+            <div className="form-group">
+              <label>Your Name:</label>
+              <input 
+                type="text" 
+                value={newReview.name}
+                onChange={(e) => setNewReview({...newReview, name: e.target.value})}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Your Review:</label>
+              <textarea 
+                value={newReview.comment}
+                onChange={(e) => setNewReview({...newReview, comment: e.target.value})}
+                required
+              />
+            </div>
+            <button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Submitting...' : 'Submit Review'}
+            </button>
+          </form>
+
+          <div className="reviews-list">
+            {reviews.length === 0 ? (
+              <p>No reviews yet. Be the first to review!</p>
+            ) : (
+              reviews.map((review) => (
+                <div key={review.id} className="review-card">
+                  <div className="review-header">
+                    <span className="reviewer">{review.name}</span>
+                    <span className="review-date">
+                      {new Date(review.date).toLocaleDateString()}
+                    </span>
+                    <StarRating rating={review.rating} readonly />
+                  </div>
+                  <p className="review-comment">{review.comment}</p>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      ) 
+    },
+    { 
+      id: "shipping", 
+      label: "Shipping & Returns", 
+      content: (
+        <div>
+          <h4>Delivery Options</h4>
+          <p>Standard shipping: 3-5 business days</p>
+          <p>Express shipping: 1-2 business days</p>
+          <h4>Return Policy</h4>
+          <p>30-day money-back guarantee</p>
+        </div>
+      ) 
+    }
+  ];
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 1024) {
+        setActiveTab("description");
+        setOpenTab(null);
+      }
+    };
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  },  [setActiveTab]);
+  }, [setActiveTab]);
 
   const handleToggle = (id) => {
-    setOpenTab(prevOpen => (prevOpen === id ? null : id)); // Toggle tab open/close
+    setOpenTab(prevOpen => (prevOpen === id ? null : id));
   };
-
-
 
   return (
     <div className="tabs">
-      {/* Tab Headers */}
       <ul className="tab-list">
         {tabs.map((tab) => (
-         
           <li
             key={tab.id}
-            className={`tab-item ${ activeTab === tab.id ? "active" : "" }`}
+            className={`tab-item ${activeTab === tab.id ? "active" : ""}`}
             role="tab"
             aria-selected={activeTab === tab.id}
             onClick={() => {
               if (window.innerWidth <= 1024) {
-                // Mobile/Tablet behavior
                 handleToggle(tab.id);
               } else {
-                // Laptop/Desktop behavior
                 setActiveTab(tab.id);
               }
             }}
@@ -99,83 +222,42 @@ const Tabs = ({ activeTab, setActiveTab }) => {
             <div className="tab-header">
               <span>{tab.label}</span>
               {window.innerWidth <= 1024 && (
-                <span
-                  className={`arrow ${openTab === tab.id ? "up" : "down" }`}
-                />
+                <span className={`arrow ${openTab === tab.id ? "up" : "down"}`} />
               )}
             </div>
-            </li>
-            ))}
-            </ul>
-            {/* Tab Contents */}
-          <div className="tab-content-container">
-          {tabs.map(
-            (tab) =>
-          (window.innerWidth > 1024 && activeTab === tab.id) ||
-            (window.innerWidth <= 1024 && openTab === tab.id) ? (
-              <div key={tab.id} className="tab-content">{tab.content}</div>
-            ) : null)}
-        
-        </div>
+          </li>
+        ))}
+      </ul>
 
+      <div className="tab-content-container">
+        {tabs.map((tab) =>
+          (window.innerWidth > 1024 && activeTab === tab.id) ||
+          (window.innerWidth <= 1024 && openTab === tab.id) ? (
+            <div key={tab.id} className="tab-content">
+              {tab.content}
+            </div>
+          ) : null
+        )}
+      </div>
     </div>
   );
 };
 
 Tabs.propTypes = {
-    activeTab: PropTypes.string.isRequired,
-    setActiveTab: PropTypes.func.isRequired,
-    
-  };
+  activeTab: PropTypes.string.isRequired,
+  setActiveTab: PropTypes.func.isRequired,
+  productId: PropTypes.string.isRequired,
+  product: PropTypes.shape({
+    product_description: PropTypes.string,
+    Brand: PropTypes.shape({
+      brand_name: PropTypes.string
+    }),
+    ProductCategory: PropTypes.shape({
+      category_name: PropTypes.string
+    }),
+    weight: PropTypes.number,
+    dimensions: PropTypes.string
+  }).isRequired
+};
 
 export default Tabs;
-
-  /*const renderTabContent = () => {
-    switch (activeTab) {
-      case "description":
-        return (
-          <div>
-            <h3>Vestibulum Tempus Metus</h3>
-            <p>Cubilia vestibulum interdum nisl a parturient a auctor vestibulum taciti vel bibendum tempor adipiscing suspendisse posuere libero penatibus lorem at interdum tristique iaculis redosan condimentum a ac rutrum mollis consectetur. Aenean nascetur vehicula egestas a adipiscing a est egestas suspendisse parturient diam adipiscing mattis elementum velit pulvinar suscipit sagittis facilisis facilisi tortor morbi at aliquam.</p>
-<br/><p>Netus nisi volutpat donec condimentum nunc eu sem odio condimentum hendrerit nisl mollis scelerisque ad vitae a eu.</p>
-<br/><p>Etiam dictumst congue a non class risus sed a. Diam adipiscing a condimentum in a nisl a maecenas libero pharetra tincidunt phasellus justo molestie bibendum. Vestibulum penatibus vestibulum lobortis vehicula euismod a platea taciti a eget in nec cum eget curabitur justo id enim mi velit at cum. Eu amet ut elit a sociis himenaeos eros nunc at pharetra magna suscipit.</p>
-          </div>
-        );
-      case "additionalInfo":
-        return (
-          <div>
-            <h3>Additional Information</h3>
-            <ul>
-                <li>Color: Beige, Black</li>
-                <li>Brand: Eva Solo</li>
-                <li>Thickness: 0.39</li>
-                <li>Diameter: 1.58</li>
-                <li>Strap Size: Unisex</li>
-            </ul>
-          </div>
-        );
-      case "reviews":
-        return (
-          <div>
-            <h3>Customer Reviews</h3>
-            <p>No reviews yet. Be the first to write one!</p>
-          </div>
-        );
-      case "aboutBrand":
-        return (
-          <div>
-            <h3>About the Brand</h3>
-            <p>Information about the brand, its history, and mission.</p>
-          </div>
-        );
-      case "shipping":
-        return (
-          <div>
-            <h3>Shipping & Delivery</h3>
-            <p>Details about shipping timelines and policies.</p>
-          </div>
-        );
-      default:
-        return null;
-    }
-  }; */
