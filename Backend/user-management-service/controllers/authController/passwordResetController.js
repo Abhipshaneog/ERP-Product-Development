@@ -12,7 +12,7 @@ const requestPasswordReset = async (req, res) => {
     if (!user) return res.status(404).json({ error: "User not found." });
 
     const token = generateToken();
-    const expiresAt = new Date(Date.now() + 60 * 1000); // 1 min
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 1 min
     await prisma.passwordResetToken.create({
       data: {
         email: user.email,
@@ -21,7 +21,7 @@ const requestPasswordReset = async (req, res) => {
       },
     });
 
-    const resetUrl = `http://localhost:5173/reset-password/${token}`;
+    const resetUrl = `http://localhost:3000/reset-password/${token}`;
     await sendEmail(
       email,
       "Password Reset Request",

@@ -9,7 +9,7 @@ const connectDB = require('./config/db');
 const session = require('./config/sessionStore');
 const startServer = require('./graphql'); 
 const authRoutes = require('./routes/authRoutes');
-const productRoutes = require("./routes/productRoutes");
+
 
 // Load environment variables
 dotenv.config();
@@ -30,7 +30,7 @@ app.use(morgan('combined', { stream: accessLogStream }));  // Logs to a file in 
 // Set additional middlewares
 app.use(helmet());
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://192.168.29.199:5173/my-account'],
+  origin: ['http://localhost:3000', 'http://192.168.29.199:3000/my-account'],
   credentials: true
 }));
 app.use(express.json());
@@ -39,7 +39,7 @@ app.use(session);
 
 // Route middlewares
 app.use('/api/auth', authRoutes);
-app.use("/api/products", productRoutes);
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {

@@ -9,14 +9,17 @@
     "test": "jest",
     "prisma:generate": "npx prisma generate --schema=models/prisma/schema.prisma",
     "prisma:push": "npx prisma db push --schema=models/prisma/schema.prisma",
-    "prisma:pull": "npx prisma db pull --schema=models/prisma/schema.prisma"
-    
+    "prisma:pull": "npx prisma db pull --schema=models/prisma/schema.prisma",
+    "prisma:seed": "npx prisma db seed --schema=./models/prisma/schema.prisma"
+  },
+  "prisma": {
+    "seed": "node models/prisma/seed.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@apollo/server": "^4.11.3",
+    "@apollo/server": "^4.12.1",
     "@graphql-tools/graphql-file-loader": "^8.0.11",
     "@graphql-tools/load": "^8.0.12",
     "@prisma/client": "^6.3.0",
@@ -31,11 +34,11 @@
     "express-session": "^1.18.1",
     "express-validator": "^7.2.1",
     "google-auth-library": "^9.15.0",
-    "graphql": "^16.10.0",
+    "graphql": "^16.11.0",
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
     "kafka-node": "^5.0.0",
-    "mongodb": "^6.12.0",
+    "mongodb": "^6.16.0",
     "mongoose": "^8.9.5",
     "morgan": "^1.10.0",
     "nodemailer": "^6.10.0",

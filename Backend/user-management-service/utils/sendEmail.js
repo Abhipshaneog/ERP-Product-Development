@@ -13,7 +13,7 @@ const sendEmail = async (to, subject, text) => {
   await transporter.sendMail({
     to,
     subject,
-    text,
+    html: text,
   });
 };
 

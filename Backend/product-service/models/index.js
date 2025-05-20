@@ -13,6 +13,14 @@ const SizeCategory = require("./SizeCategory");
 const SizeOption = require("./SizeOption");
 const HomepageSection = require("./HomepageSection");
 const HomepageSectionProduct = require("./HomepageSectionProduct");
+const Discount = require("./Discount");
+const ProductDiscount = require("./ProductDiscount");
+const Coupon = require("./Coupon");
+const UserCoupon = require("./UserCoupon");
+const CategoryDiscount = require("./CategoryDiscount");
+const CouponCategory = require("./CouponCategory");
+
+
 
 /* Associations */
 
@@ -72,6 +80,48 @@ HomepageSectionProduct.belongsTo(HomepageSection, { foreignKey: "section_id" });
 Product.hasMany(HomepageSectionProduct, { foreignKey: "product_id", onDelete: "CASCADE" });
 HomepageSectionProduct.belongsTo(Product, { foreignKey: "product_id" });
 
+// A Discount can be applied to many ProductItems via ProductDiscount.
+Discount.belongsToMany(ProductItem, {
+  through: ProductDiscount,
+  foreignKey: "discount_id",
+  otherKey: "product_item_id",
+});
+ProductItem.belongsToMany(Discount, {
+  through: ProductDiscount,
+  foreignKey: "product_item_id",
+  otherKey: "discount_id",
+});
+
+// A Coupon has many UserCoupons
+Coupon.hasMany(UserCoupon, { foreignKey: "coupon_id", onDelete: "CASCADE" });
+UserCoupon.belongsTo(Coupon, { foreignKey: "coupon_id" });
+
+// A Discount can be applied to many ProductCategories via CategoryDiscount.
+Discount.belongsToMany(ProductCategory, {
+  through: CategoryDiscount,
+  foreignKey: "discount_id",
+  otherKey: "product_category_id"
+});
+ProductCategory.belongsToMany(Discount, {
+  through: CategoryDiscount,
+  foreignKey: "product_category_id",
+  otherKey: "discount_id"
+});
+
+// A Coupon can be applied to many ProductCategories via CouponCategory.
+Coupon.belongsToMany(ProductCategory, {
+  through: CouponCategory,
+  foreignKey: "coupon_id",
+  otherKey: "product_category_id"
+});
+ProductCategory.belongsToMany(Coupon, {
+  through: CouponCategory,
+  foreignKey: "product_category_id",
+  otherKey: "coupon_id"
+});
+
+
+
 module.exports = {
   sequelize, 
   Brand,
@@ -86,5 +136,11 @@ module.exports = {
   SizeCategory,
   SizeOption,
   HomepageSection,
-  HomepageSectionProduct
+  HomepageSectionProduct,
+  Discount,
+  ProductDiscount,
+  Coupon,
+  UserCoupon,
+  CategoryDiscount,
+  CouponCategory
 };

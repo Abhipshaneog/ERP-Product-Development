@@ -1,13 +1,16 @@
 // graphql/index.js
 const { ApolloServer } = require('@apollo/server');
+const { expressMiddleware } = require('@apollo/server/express4');
 const { loadSchemaSync } = require('@graphql-tools/load');
 const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
-const authResolvers = require('./resolvers/authResolvers');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 dotenv.config();
 
-const authenticate  = require('../middlewares/authMiddleware'); 
+const authResolvers = require('./resolvers/authResolvers');
+const authenticate = require('../middlewares/authMiddleware');
 
 
 const typeDefs = loadSchemaSync('graphql/schema.graphql', {
@@ -19,47 +22,44 @@ const resolvers = authResolvers;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => {
-    const token = req.headers.authorization || '';
-    let userId = null;
-
-    // If token exists, decode it
-    if (token) {
-      try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        userId = decoded.userId;
-      } catch (error) {
-        console.error('Invalid token');
-      }
-    }
-
-    // Return userId in context
-    return { userId };
-  },
 });
 
 // Async function to start Apollo Server
 async function startServer(app) {
+
+  await server.start();
+  console.log('Apollo Server started');
   // Apply authentication middleware to all routes before Apollo Server
   app.use(authenticate); 
 
   // Log message when authentication middleware is applied
   console.log('Authentication middleware applied');
 
-  // Start Apollo Server
-  await server.start();
-  
-  // Log message when Apollo Server has started
-  console.log('Apollo Server started');
+ // GraphQL endpoint middleware
+ app.use(
+  '/graphql',
+  cors({ origin: ['http://localhost:5173', 'http://192.168.29.199:5173'], credentials: true }),
+  bodyParser.json(),
+  expressMiddleware(server, {
+    context: async ({ req }) => {
+      const token = req.headers.authorization || '';
+      let userId = null;
 
-  // Apply Apollo Server as middleware to the existing app
-  server.applyMiddleware({ app, path: '/graphql' });
-  
-  // Log message when GraphQL endpoint is applied
-  console.log('GraphQL server set up at /graphql');
+      if (token) {
+        try {
+          const decoded = jwt.verify(token, process.env.JWT_SECRET);
+          userId = decoded.userId;
+        } catch (error) {
+          console.error('Invalid token');
+        }
+      }
 
-  // Return the app for use in the app.js file
-  return app;
+      return { userId };
+    },
+  })
+);
+
+console.log('GraphQL server set up at /graphql');
 }
 
-module.exports = startServer; 
+module.exports = startServer;
