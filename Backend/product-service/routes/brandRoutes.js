@@ -13,8 +13,7 @@ router.get('/', brandController.getAllBrands);
 router.get('/:id', validateBrandId, validationHandler, brandController.getBrandById);
 
 // CREATE a new brand
-router.post('/', uploadBrandImage.single("brand_image_url"), (req, res) => {
-  res.json({ imageUrl: req.file.location }); },  validateBrand, validationHandler, brandController.createBrand);  // Admin only
+router.post('/', uploadBrandImage.single("brand_image_url"),   validateBrand, validationHandler, brandController.createBrand);  // Admin only
 
 // UPDATE an existing brand
 router.put('/:id', uploadBrandImage.single("brand_image_url"), validateBrandId, validateBrand , validationHandler,  brandController.updateBrand); // Admin only

@@ -8,7 +8,7 @@ import image4 from "../../../assets/Picture4.webp";
 import image5 from "../../../assets/Picture5.webp";
 import image6 from "../../../assets/Picture6.jpg";
 
-const RecommendedProducts = () => {
+const TopDeals = () => {
   const scrollRef = useRef(null);
 
   const TopDeals = [
@@ -75,7 +75,7 @@ const RecommendedProducts = () => {
 
   return (
     <div className="featured-products-wrapper">
-      <h2 className="section-title1">Recommended Products</h2>
+      <h2 className="section-title1">Top Deals and offers</h2>
 
       <div className="scroll-row">
         <button className="arrow-btn left" onClick={() => scroll("left")}>
@@ -120,4 +120,4 @@ const RecommendedProducts = () => {
   );
 };
 
-export default RecommendedProducts;
+export default TopDeals;

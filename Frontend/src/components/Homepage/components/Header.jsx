@@ -1,201 +1,119 @@
-import { useEffect, useRef, useState } from "react";
-import { FaCaretDown, FaSearch } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import { fetchCategories, fetchSubcategories } from "../../../services/api";
-import { user_id } from '../../../services/cartApi';
-import { useCart } from '../../Context/CartContext';
+import { useRef, useState } from "react";
+import {
+  FaBars,
+  FaGlobe,
+  FaHeart,
+  FaMapMarkerAlt,
+  FaSearch,
+  FaShoppingCart,
+  FaUser,
+} from "react-icons/fa";
+import logo from "../../../assets/galvinus_logo.jpeg";
 import "./Header.css";
-import ProfileDropdown from "./ProfileDropdown";
 
 const Header = () => {
-  const [searchText, setSearchText] = useState("");
-  const [category, setCategory] = useState("All Categories");
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
-  const [subcategories, setSubcategories] = useState({});
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [profileHover, setProfileHover] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showMobileDropdown, setShowMobileDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+  const mobileDropdownRef = useRef(null);
 
-  const dropdownTimeoutRef = useRef(null); 
-  const navigate = useNavigate();
-  const { cartItemCount } = useCart();
+  const categories = [
+    "Electronics",
+    "Fashion",
+    "Home Appliances",
+    "Books",
+    "Toys",
+  ];
 
-  const handleSearch = () => {
-    console.log("Search Text: ", searchText);
-    console.log("Selected Category: ", category);
-  };
+  // Close dropdowns when clicking outside
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+  //       setShowDropdown(false);
+  //     }
 
-  const handleCategorySelect = (selectedCategory) => {
-    setCategory(selectedCategory);
-    setDropdownOpen(false);
-    // Navigate to shopping page with query param
-  navigate(`/shopping-page?category=${encodeURIComponent(selectedCategory)}`);
-  };
-  const handleCartClick = () => {
-    //const userId = '6f94aefc-36a1-4e7d-8c7f-2a81bbffb002'; // static for now
-    navigate(`/cart/${user_id}`);
-  };
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      const token = localStorage.getItem("authToken"); // or any key you use to track login
-      setIsLoggedIn(!!token);
-    };
-  
-    checkLoginStatus();
-  }, []);
-  
+  //     if (
+  //       (mobileDropdownRef.current &&
+  //         !mobileDropdownRef.current.contains(event.target)) ||
+  //       showDropdown
+  //     ) {
+  //       setShowMobileDropdown(false);
+  //     }
+  //   };
 
-  
-
-  useEffect(() => {
-    const fetchCategoryData = async () => {
-      try {
-        const fetchedCategories = await fetchCategories();  // Fetch categories from API
-        setCategories(fetchedCategories);
-
-        // Fetch subcategories for each category
-        const subcategoriesData = {};
-        for (const category of fetchedCategories) {
-          const subcats = await fetchSubcategories(category.product_category_id);
-          subcategoriesData[category.product_category_id] = subcats;
-        }
-        setSubcategories(subcategoriesData);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    fetchCategoryData();
-
-    const handleScroll = () => {
-      const menuElement = document.querySelector(".header-container");
-      if (menuElement) {
-        setIsScrolled(window.scrollY > menuElement.offsetTop);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-  useEffect(() => {
-    return () => {
-      if (dropdownTimeoutRef.current) {
-        clearTimeout(dropdownTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => document.removeEventListener("mousedown", handleClickOutside);
+  // }, []);
 
   return (
-    <header className={`header-container ${isScrolled ? "scrolled" : ""}`}>
-      <div className="header-main-content">
-        {/* Logo Section */}
-        <div className="logo-container" onClick={() => navigate("/")} 
-          style={{ cursor: "pointer" }}>
-          <img
-            src="https://galvinus.com/wp-content/uploads/2023/07/Galvinus_logo.001-e1690357187933.jpeg"
-            alt="Logo"
-            className="logo"
-          />
-        </div>
-
-        <div className="search-container">
-          <input
-            type="text"
-            className="search-input"
-            placeholder="Search for products"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-    <div
-            className="custom-dropdown"
-            onMouseEnter={() => {
-              if (dropdownTimeoutRef.current) {
-                clearTimeout(dropdownTimeoutRef.current);
-              }
-              setDropdownOpen(true);
-            }}
-            onMouseLeave={() => {
-              dropdownTimeoutRef.current = setTimeout(() => {
-                setDropdownOpen(false);
-              }, 300); // 300ms delay
-            }}
-          >
-                <div className="dropdown-selected">{category}</div>
-            <FaCaretDown />
-            {dropdownOpen && (
-          <ul
-            className="dropdown-options">
-              <li onClick={() => handleCategorySelect("All Categories")}>
-                 All Categories
-              </li>
-
-       {categories.map((categoryItem) => (
-      <li
-        key={categoryItem.product_category_id}
-        className="category-item"
-      >
-        <span
-          onClick={() => handleCategorySelect(categoryItem.category_name)}
+    <header className="header">
+      <div className="header-left">
+        <img src={logo} alt="GALVINUS" className="logo" />
+        <div
+          className="categories"
+          onClick={() => setShowDropdown((prev) => !prev)}
+          ref={dropdownRef}
         >
-          {categoryItem.category_name}
-        </span>
-
-        {subcategories[categoryItem.product_category_id] && (
-          <ul
-            className="subcategories-list">
-            {subcategories[categoryItem.product_category_id].map((subcat) => (
-              <li key={subcat.product_category_id}>
-                 <span onClick={() => handleCategorySelect(subcat.category_name)}>
-                  {subcat.category_name}
-                </span>
-              </li>
-            ))}
-          </ul>
-            )}
-          </li>
-        ))}
-      </ul>
-    )}
-</div>
-
-          <button className="search-btn" onClick={handleSearch}>
-            <FaSearch />
-          </button>
-        </div>
-
-        <div className="profile-cart-container">
-          
-        {isLoggedIn ? (
-        <div className="profile-wrapper"
-          onMouseEnter={() => setProfileHover(true)}
-          onMouseLeave={() => setProfileHover(false)}
-        >
-          <button className="profile-btn">👤 My Account</button>
-          {profileHover && (
-            <div className="profile-dropdown-container">
-              <ProfileDropdown setIsLoggedIn={setIsLoggedIn} />
-            </div>
+          <FaBars className="icon" />
+          <span>All categories</span>
+          {showDropdown && (
+            <ul className="dropdown">
+              {categories.map((cat, index) => (
+                <li key={index}>{cat}</li>
+              ))}
+            </ul>
           )}
         </div>
-      ) : (
-        <button className="profile-btn" onClick={() => navigate("/my-account")}>
-          🔐 Login
-        </button>
-      )}
+      </div>
 
-          <button className="cart-button" onClick={handleCartClick}>
-        🛒 Cart
-        {cartItemCount > 0 && (
-          <span className="cart-count-badge">{cartItemCount}</span>
-        )}
-      </button>
+      <div className="search-box">
+        <input type="text" placeholder="Search..." />
+        <button className="search-button">
+          <FaSearch />
+        </button>
+      </div>
+
+      <div className="header-right">
+        <div className="icon-text">
+          <FaMapMarkerAlt />
+          <span>Location</span>
+        </div>
+        <div className="icon-text">
+          <FaGlobe />
+          <span>Language</span>
+        </div>
+        <div className="icon-text">
+          <FaUser />
+          <span>Login</span>
+        </div>
+        <FaShoppingCart className="icon" />
+        <FaHeart className="icon" />
+        <div
+          className="mobile-bars-icon"
+          onClick={() => {
+            setShowMobileDropdown((prev) => !prev);
+          }}
+        >
+          <FaBars className="barsIcon" />
         </div>
       </div>
+
+      {/* Mobile Dropdown */}
+      {showMobileDropdown && (
+        <div className="mobile-dropdown" ref={mobileDropdownRef}>
+          <ul className="mobile-categories">
+            <div className="search-box mobile-search-box">
+              <input type="text" placeholder="Search..." />
+              <button className="search-button">
+                <FaSearch />
+              </button>
+            </div>
+            {categories.map((cat, index) => (
+              <li key={index}>{cat}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </header>
   );
 };

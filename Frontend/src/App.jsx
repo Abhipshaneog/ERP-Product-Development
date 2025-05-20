@@ -18,7 +18,7 @@ import OrderConfirmation from "./components/OrderConfirmation/OrderConfirmation"
 import CancelOrderPage from "./components/OrderHistory/CancelOrderPage";
 import OrderPage from "./components/OrderHistory/OrderPage";
 import TrackOrderPage from "./components/OrderHistory/TrackOrderPage";
-import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
+// import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
 import ProductDetails from "./components/ProductDetails/ProductDetails";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import ShoppingPageIndex from "./components/ShoppingPage/ShoppingPageIndex";
