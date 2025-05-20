@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Popup from "../../utils/Popup";
-import { GoogleLogin } from "react-google-login";
+// import { GoogleLogin } from "react-google-login";
 import "./LoginRegister.css";
 
 const LoginRegister = () => {
@@ -22,22 +22,22 @@ const LoginRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const deviceId = localStorage.getItem("deviceId") || generateDeviceId();
     const userAgent = navigator.userAgent;
-  
+
     const url = isLoginPage
       ? "http://localhost:5000/api/auth/login"
       : "http://localhost:5000/api/auth/register";
-  
+
     const headers = {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("accessToken") || ""}`,
       "x-refresh-token": localStorage.getItem("refreshToken") || "",
-      "x-device-id": deviceId,  // Send deviceId in headers
-      "user-agent": userAgent,   // Send user agent in headers
+      "x-device-id": deviceId, // Send deviceId in headers
+      "user-agent": userAgent, // Send user agent in headers
     };
-  
+
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -50,9 +50,9 @@ const LoginRegister = () => {
           userAgent: userAgent,
         }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         setPopup({
           visible: true,
@@ -79,28 +79,28 @@ const LoginRegister = () => {
       });
     }
   };
-  
+
   const handleLogout = async () => {
     try {
       // Collect device information
       const deviceInfo = {
-        userAgent: navigator.userAgent,  // Fetch user agent from the browser
+        userAgent: navigator.userAgent, // Fetch user agent from the browser
       };
-  
+
       const headers = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("accessToken") || ""}`,
         "x-refresh-token": localStorage.getItem("refreshToken") || "",
-        "x-device-id": localStorage.getItem("deviceId") || "",  // Send device ID in headers (same as login)
-        "user-agent": navigator.userAgent,   // Send user agent in headers
+        "x-device-id": localStorage.getItem("deviceId") || "", // Send device ID in headers (same as login)
+        "user-agent": navigator.userAgent, // Send user agent in headers
       };
-  
+
       const response = await fetch("http://localhost:5000/api/auth/logout", {
         method: "POST",
         headers,
-        body: JSON.stringify({ deviceInfo }),  // Send device info with logout request
+        body: JSON.stringify({ deviceInfo }), // Send device info with logout request
       });
-  
+
       if (response.ok) {
         // Clear tokens from storage
         localStorage.clear();
@@ -127,34 +127,33 @@ const LoginRegister = () => {
       });
     }
   };
-  
-  
+
   const responseGoogle = async (response) => {
     try {
       if (response.tokenId) {
         // Collect device information
         const deviceInfo = {
-          userAgent: navigator.userAgent,  // Get user agent from the browser
+          userAgent: navigator.userAgent, // Get user agent from the browser
         };
-  
+
         const headers = {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken") || ""}`,
           "x-refresh-token": localStorage.getItem("refreshToken") || "",
-          "x-device-id": localStorage.getItem("deviceId") || generateDeviceId(),  // Send device ID (if available)
+          "x-device-id": localStorage.getItem("deviceId") || generateDeviceId(), // Send device ID (if available)
           "user-agent": navigator.userAgent,
         };
-  
+
         // Send the Google token and device info to the backend
         const res = await fetch("http://localhost:5000/api/auth/google-login", {
           method: "POST",
           headers,
           body: JSON.stringify({
             tokenId: response.tokenId,
-            deviceInfo,  // Send device info with the request
+            deviceInfo, // Send device info with the request
           }),
         });
-  
+
         const data = await res.json();
         if (res.ok) {
           setPopup({
@@ -162,8 +161,10 @@ const LoginRegister = () => {
             message: data.message || "Google login successful!",
             type: "success",
           });
-          if (data.accessToken) localStorage.setItem("accessToken", data.accessToken);
-          if (data.refreshToken) localStorage.setItem("refreshToken", data.refreshToken);
+          if (data.accessToken)
+            localStorage.setItem("accessToken", data.accessToken);
+          if (data.refreshToken)
+            localStorage.setItem("refreshToken", data.refreshToken);
         } else {
           setPopup({
             visible: true,
@@ -187,16 +188,12 @@ const LoginRegister = () => {
       });
     }
   };
-  
-  
 
   const generateDeviceId = () => {
     const deviceId = `device-${Math.random().toString(36).substr(2, 9)}`;
     localStorage.setItem("deviceId", deviceId);
     return deviceId;
   };
-
-
 
   const closePopup = () => {
     setPopup({ visible: false, message: "", type: "" });
