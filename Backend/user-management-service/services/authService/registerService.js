@@ -13,13 +13,15 @@ const registerUser = async ({
 }) => {
   try {
     // Check if the email is already registered
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-    });
+    console.log(name, email, password, deviceId, userAgent, ipAddress, 'Cqwertqqqqqqqqq');
+   // Check if the email is already registered
+const existingUserByEmail = await prisma.user.findUnique({
+  where: { email },
+});
 
-    if (existingUser) {
-      throw new Error("Email is already registered");
-    }
+if (existingUserByEmail) {
+  throw new Error("Email is already registered");
+}
 
     // Hash the password
     const passwordHash = await bcrypt.hash(password, 10);
@@ -85,6 +87,18 @@ const registerUser = async ({
     // Return the tokens and the device info
     return { accessToken, refreshToken, device };
   } catch (err) {
+    console.error("Prisma error:", JSON.stringify(err, null, 2));
+    
+    // Handle Prisma unique constraint violation
+  if (err.code === 'P2002') {
+    let fields = 'field';
+    if (Array.isArray(err.meta?.target)) {
+      fields = err.meta.target.join(', ');
+    } else if (typeof err.meta?.target === 'string') {
+      fields = err.meta.target;
+    }
+    throw new Error(`A user with this ${fields} already exists.`);
+  }
     throw new Error(err.message || "Error during registration");
   }
 };
