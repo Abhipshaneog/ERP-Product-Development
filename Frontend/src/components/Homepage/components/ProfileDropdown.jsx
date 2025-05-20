@@ -1,10 +1,10 @@
-import React from "react";
+import PropTypes from 'prop-types';
 import { FaHeart, FaShoppingCart, FaSignOutAlt, FaStar, FaTags, FaUser } from "react-icons/fa"; // Importing FontAwesome icons
 import { useNavigate } from "react-router-dom";
 import { user_id } from '../../../services/cartApi';
 import "./ProfileDropdown.css";
 
-const ProfileDropdown = () => {
+const ProfileDropdown = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
 
   const handleNavigation = (page) => {
@@ -26,7 +26,11 @@ const ProfileDropdown = () => {
         break;
       case "logout":
         // Handle logout logic
+        localStorage.removeItem("authToken");
+        setIsLoggedIn(false); // update parent header
+        navigate("/login");
         break;
+        
       default:
         break;
     }
@@ -57,5 +61,10 @@ const ProfileDropdown = () => {
   </div>
 );
 };
+
+ProfileDropdown.propTypes = {
+  setIsLoggedIn: PropTypes.func.isRequired,
+};
+
 
 export default ProfileDropdown;

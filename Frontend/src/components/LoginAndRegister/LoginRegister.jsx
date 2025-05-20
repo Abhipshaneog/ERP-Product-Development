@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import Popup from "../../utils/Popup";
+import { useState } from "react";
 import { GoogleLogin } from "react-google-login";
+import { useNavigate } from "react-router-dom";
+import Popup from "../../utils/Popup";
 import "./LoginRegister.css";
 
 const LoginRegister = () => {
+  const navigate = useNavigate();
   const [isLoginPage, setIsLoginPage] = useState(true);
   const [formData, setFormData] = useState({
     username: "",
@@ -63,6 +65,11 @@ const LoginRegister = () => {
           localStorage.setItem("accessToken", data.accessToken);
         if (data.refreshToken)
           localStorage.setItem("refreshToken", data.refreshToken);
+
+        //  Redirect to homepage after login
+        if (isLoginPage) {
+          navigate("/");
+        }
       } else {
         setPopup({
           visible: true,

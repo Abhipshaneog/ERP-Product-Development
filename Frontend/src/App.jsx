@@ -2,7 +2,8 @@ import "./App.css";
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import AboutIndex from "./components/AboutUsPage/AboutIndex";
+//import AboutIndex from "./components/AboutUsPage/AboutIndex";
+import AboutUs from "./components/AboutUs/AboutUs";
 import CartPage from "./components/Cart/CartPage";
 import CheckoutPageMain from "./components/Checkout/CheckoutPageMain";
 import ContactUs from "./components/ContactUsPage/ContactUs";
@@ -49,7 +50,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
-            <Route path="about" element={<AboutIndex />} />
+            <Route path="about" element={<AboutUs />} />
             <Route path="contact" element={<ContactUs />} />
             <Route path="my-account" element={<LoginRegister />} />
             <Route path="password-reset" element={<PasswordReset />} />

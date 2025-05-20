@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaCaretDown, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { fetchCategories, fetchSubcategories } from "../../../services/api";
@@ -15,6 +15,8 @@ const Header = () => {
   const [subcategories, setSubcategories] = useState({});
   const [isScrolled, setIsScrolled] = useState(false);
   const [profileHover, setProfileHover] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const dropdownTimeoutRef = useRef(null); 
   const navigate = useNavigate();
   const { cartItemCount } = useCart();
@@ -34,6 +36,15 @@ const Header = () => {
     //const userId = '6f94aefc-36a1-4e7d-8c7f-2a81bbffb002'; // static for now
     navigate(`/cart/${user_id}`);
   };
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const token = localStorage.getItem("authToken"); // or any key you use to track login
+      setIsLoggedIn(!!token);
+    };
+  
+    checkLoginStatus();
+  }, []);
+  
 
   
 
@@ -159,18 +170,24 @@ const Header = () => {
 
         <div className="profile-cart-container">
           
-            <div className="profile-wrapper"
-            onMouseEnter={() => setProfileHover(true)}
-            onMouseLeave={() => setProfileHover(false)}
-            >
-            <button className="profile-btn">
-            👤 Profile
-          </button>
+        {isLoggedIn ? (
+        <div className="profile-wrapper"
+          onMouseEnter={() => setProfileHover(true)}
+          onMouseLeave={() => setProfileHover(false)}
+        >
+          <button className="profile-btn">👤 My Account</button>
+          {profileHover && (
+            <div className="profile-dropdown-container">
+              <ProfileDropdown setIsLoggedIn={setIsLoggedIn} />
+            </div>
+          )}
+        </div>
+      ) : (
+        <button className="profile-btn" onClick={() => navigate("/my-account")}>
+          🔐 Login
+        </button>
+      )}
 
-          {profileHover && (<div className="profile-dropdown-container">
-      <ProfileDropdown />
-    </div>)}
-          </div>
           <button className="cart-button" onClick={handleCartClick}>
         🛒 Cart
         {cartItemCount > 0 && (
