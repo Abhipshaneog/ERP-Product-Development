@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./Hero.css";
+import image1 from "../../../assets/picture7.jpg";
 
 const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const images = [
-    "https://img.freepik.com/free-photo/black-friday-sales-sign-neon-light_23-2151833076.jpg?semt=ais_hybrid&w=740",
+    image1,
+    "https://woodmart.b-cdn.net/wp-content/uploads/2016/07/blog-1-furnit-1.jpg",
+    image1,
     "https://img.freepik.com/premium-vector/digital-marketing-concept-shopping-online-mobile-application_68971-366.jpg?semt=ais_hybrid&w=740",
-    //"https://woodmart.b-cdn.net/wp-content/uploads/2016/07/blog-1-furnit-1.jpg",
-    "https://img.freepik.com/free-vector/ecommerce-web-page-concept-illustration_114360-8204.jpg?semt=ais_hybrid&w=740",
   ];
 
   const handleDotClick = (index) => {
