@@ -292,6 +292,15 @@ const ProductList = ({
 
   return (
     <div className="container">
+      <nav className="breadcrumb">
+        <span>
+          <a href="/">Home</a> &gt;{" "}
+        </span>
+        <span>
+          <a href="/categories">Categories</a> &gt;{" "}
+        </span>
+        <span>Mobiles</span>
+      </nav>
       <div className="product-list">
         {currentProducts.length > 0 ? (
           currentProducts.map((product) => (
