@@ -1,15 +1,15 @@
-import React, { useState, useRef, useEffect } from "react";
-import "./Header.css";
+import { useRef, useState } from "react";
 import {
-  FaSearch,
-  FaMapMarkerAlt,
-  FaGlobe,
-  FaUser,
-  FaShoppingCart,
-  FaHeart,
   FaBars,
+  FaGlobe,
+  FaHeart,
+  FaMapMarkerAlt,
+  FaSearch,
+  FaShoppingCart,
+  FaUser,
 } from "react-icons/fa";
 import logo from "../../../assets/galvinus_logo.jpeg";
+import "./Header.css";
 
 const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);

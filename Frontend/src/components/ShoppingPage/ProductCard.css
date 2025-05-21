@@ -104,8 +104,8 @@
     overflow: hidden;
     justify-content: center;
     align-items: center;
-    flex-wrap: nowrap;
-    gap: 6px;
+    padding-top: 6px;
+    gap: 10px;
     opacity: 0;
     transform: translateY(10px);
     transition: max-height 0.4s ease, opacity 0.3s ease, transform 0.3s ease;
@@ -117,7 +117,6 @@
     transform: translateY(0);
   }
   .icon-btn {
-
     padding: 6px;
     background-color: var(--white);
     border: none;
@@ -130,47 +129,30 @@
     transition: background-color 0.2s ease;
   }
   .icon-btn:hover {
-    background-color: transparent;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15); /* optional, retain same shadow */
+    background-color: transparent !important;
+    box-shadow: 0 0 6px var(--primary-color);
   }
   
   /* Smaller icons */
-.wishlist-icon,
-.add-cart-icon {
+.card-wishlist-icon,
+.card-add-cart-icon {
   font-size: 20px;
   background:transparent;
   color: var(--muted-color);
   transition: transform 0.2s ease-in-out, color 0.2s ease;
 }
 
-.wishlist-icon:hover {
+.card-wishlist-icon:hover {
   color: red;
   background:transparent;
   transform: scale(1.1);
 }
-.wishlist-icon.added {
+.card-wishlist-icon.added {
   color: red !important;
 }
-.add-cart-icon:hover {
+.card-add-cart-icon:hover {
   color: var(--primary-color);
   transform: scale(1.1);
-}
-
-/* Compact select button */
-.select-options-btn {
-  padding: 4px 8px;
-  font-size: 12px;
-  border-radius: 4px;
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background-color 0.2s ease;
-}
-
-.select-options-btn:hover {
-  background-color: var(--accent-color);
 }
 
 .carousel-card {

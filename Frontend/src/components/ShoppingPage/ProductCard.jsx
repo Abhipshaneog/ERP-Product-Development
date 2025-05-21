@@ -80,12 +80,11 @@ const ProductCard = ({ product , isCarousel = false}) => {
         </div>
         <div className="icon-overlay">
         <button className="icon-btn" onClick={handleWishlist}>
-        <FaHeart className={`wishlist-icon ${inWishlist ? "added" : ""}`} />
+        <FaHeart className={`card-wishlist-icon ${inWishlist ? "added" : ""}`} />
 
             </button>
-            <button className="select-options-btn">Select Options</button>
             <button className="icon-btn" onClick={handleAddToCart}>
-              <FaShoppingCart className="add-cart-icon" />
+              <FaShoppingCart className="card-add-cart-icon" />
             </button>
         </div>
           
