@@ -1,11 +1,10 @@
 import queryString from "query-string";
 import React, { useState } from "react";
-import { FaBars } from 'react-icons/fa';
+import { FaBars } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import FilterSection from "./FilterSection";
 import ProductList from "./ProductList";
 import "./ShoppingPageIndex.css";
-
 
 const ShoppingPageIndex = () => {
   const [selectedPrice, setSelectedPrice] = useState(5000);
@@ -19,14 +18,14 @@ const ShoppingPageIndex = () => {
   const location = useLocation();
   const { category: selectedCategory } = queryString.parse(location.search);
 
-  const toggleSidebar = () => {setIsSidebarOpen((prevState) => !prevState);};
-
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prevState) => !prevState);
+  };
 
   return (
     <div className="pageContainer">
       <div className={`filterSection ${isSidebarOpen ? "active" : ""}`}>
-      
-        <FilterSection 
+        <FilterSection
           onPriceChange={setSelectedPrice}
           onColorChange={setSelectedColor}
           onSizeChange={setSelectedSize}
@@ -34,18 +33,15 @@ const ShoppingPageIndex = () => {
           onStatusChange={setFilterStatus}
           toggleSidebar={toggleSidebar}
         />
-    
       </div>
-   
-        
-      
+
       <div
         className={`overlay ${isSidebarOpen ? "active" : ""}`}
         onClick={toggleSidebar}
       ></div>
-        
-      <div className={`content ${isSidebarOpen ? "shifted" : ""}`}> 
-      <div className="toolbar">
+
+      <div className={`content ${isSidebarOpen ? "shifted" : ""}`}>
+        {/* <div className="toolbar">
       {!isSidebarOpen && (
         <button className="showSidebarButton" onClick={toggleSidebar}>
           <FaBars /> Show Sidebar
@@ -67,10 +63,9 @@ const ShoppingPageIndex = () => {
             <option value="name-desc">Name: Z to A</option>
           </select>
         </div>
-      </div>
+      </div> */}
 
-
-        <ProductList 
+        <ProductList
           price={selectedPrice}
           color={selectedColor}
           size={selectedSize}
@@ -82,11 +77,9 @@ const ShoppingPageIndex = () => {
           toggleSidebar={toggleSidebar}
           selectedCategory={selectedCategory}
         />
-     
-    </div>
+      </div>
     </div>
   );
 };
-
 
 export default ShoppingPageIndex;

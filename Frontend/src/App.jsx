@@ -1,7 +1,7 @@
 import "./App.css";
 
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 //import AboutIndex from "./components/AboutUsPage/AboutIndex";
 import AboutUs from "./components/AboutUs/AboutUs";
 import CartPage from "./components/Cart/CartPage";
@@ -44,35 +44,46 @@ function App() {
   });
   return (
     <>
-    <CartProvider> 
-      <Router>
-      
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<HomePage />} />
-            <Route path="about" element={<AboutUs />} />
-            <Route path="contact" element={<ContactUs />} />
-            <Route path="my-account" element={<LoginRegister />} />
-            <Route path="password-reset" element={<PasswordReset />} />
-            <Route path="reset-password/:token" element={<ResetPassword />} />
-            <Route path="shopping-page" element={<ShoppingPageIndex />} />
-            <Route path="product-details/:id" element={<ProductDetails />} />
-            <Route path="cart/:user_id" element={<CartPage />} />
-            <Route path="wishlist" element={<Wishlist />} />
-           <Route path="/checkout/:user_id" element={<CheckoutPageMain />} />
-            <Route path="order-confirmation/:order_id" element={<OrderConfirmation />} />
-            <Route path="orders" element={<OrderPage />} />
-            <Route path="/orders/:orderId/items/:orderItemId/track" element={<TrackOrderPage />} />
-            <Route path="/orders/:orderId/items/:orderItemId/cancel" element={<CancelOrderPage />} />
-            <Route path="privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="faq" element={<FAQ />} />
-            <Route path="terms-and-conditions" element={<TermsAndConditions />} />
-            <Route path="profile" element={<ProfilePage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Route>
-        </Routes>
-        <ToastContainer position="top-right" autoClose={3000} />
-      </Router>
+      <CartProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<HomePage />} />
+              <Route path="about" element={<AboutUs />} />
+              <Route path="contact" element={<ContactUs />} />
+              <Route path="my-account" element={<LoginRegister />} />
+              <Route path="password-reset" element={<PasswordReset />} />
+              <Route path="reset-password/:token" element={<ResetPassword />} />
+              <Route path="shopping-page" element={<ShoppingPageIndex />} />
+              <Route path="product-details/:id" element={<ProductDetails />} />
+              <Route path="cart/:user_id" element={<CartPage />} />
+              <Route path="wishlist" element={<Wishlist />} />
+              <Route path="/checkout/:user_id" element={<CheckoutPageMain />} />
+              <Route
+                path="order-confirmation/:order_id"
+                element={<OrderConfirmation />}
+              />
+              <Route path="orders" element={<OrderPage />} />
+              <Route
+                path="/orders/:orderId/items/:orderItemId/track"
+                element={<TrackOrderPage />}
+              />
+              <Route
+                path="/orders/:orderId/items/:orderItemId/cancel"
+                element={<CancelOrderPage />}
+              />
+              {/* <Route path="privacy-policy" element={<PrivacyPolicy />} /> */}
+              <Route path="faq" element={<FAQ />} />
+              <Route
+                path="terms-and-conditions"
+                element={<TermsAndConditions />}
+              />
+              <Route path="profile" element={<ProfilePage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Route>
+          </Routes>
+          <ToastContainer position="top-right" autoClose={3000} />
+        </Router>
       </CartProvider>
     </>
   );
