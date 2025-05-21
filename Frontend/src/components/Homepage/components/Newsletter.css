@@ -1,10 +1,13 @@
 .newsletter-section {
-  background-color: var( --highlight-color);
-  color: var(--primary-color);
+  background-color: white;
+  color: black;
   padding: 50px 20px;
   text-align: center;
-}
 
+  /* Box shadow without blue border */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* soft gray shadow */
+  border-radius: 8px; /* optional: gives rounded corners */
+}
 .newsletter-container {
   max-width: 600px;
   margin: 0 auto;
@@ -18,8 +21,9 @@
 
 .newsletter-section p {
   font-size: 1rem;
+  font-weight: 500;
   margin-bottom: 25px;
-  color: var(--primary-color);
+  color: black;
 }
 
 .newsletter-form {
@@ -33,29 +37,38 @@
   padding: 12px 16px;
   width: 70%;
   max-width: 350px;
-  border: none;
+  border: 1px solid #ccc; /* light gray border */
   border-radius: 6px;
   font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.newsletter-form input[type="email"]:focus {
+  border-color: black; /* blue border on focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); /* subtle glow on focus */
 }
 
 .newsletter-form button {
-  background-color: var(--primary-color);
-  color: #ffffff;
+  background-color: #f8f9fa; /* light neutral background */
+  color: #212529; /* dark readable text */
   padding: 12px 24px;
-  border: none;
+  border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .newsletter-form button:hover {
-  background-color: var(--primary-color);
+  background-color: #e2e6ea; /* slight hover effect */
+  border-color: #9ba1a4;
+  color: #212529;
 }
-
 .newsletter-section h2,
 .newsletter-section p,
 .newsletter-form input,
 .newsletter-form button {
-  font-family: inherit; 
+  font-family: inherit;
 }

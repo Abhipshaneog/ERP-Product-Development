@@ -1,64 +1,117 @@
 .category-slider {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 1rem;
-  padding: 1rem;
+  text-align: center;
+  padding: 20px;
+  max-width: 100%;
+  box-sizing: border-box;
   background-color: white;
-
-  /* overflow-x: auto; */
-  white-space: nowrap;
 }
+
+.category-slider h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
 .categories1234 {
   display: flex;
-  justify-content: stretch;
-  width: 100% !important;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+  flex-wrap: nowrap;
 }
 
 .arrow-btn {
-  background: none;
+  background-color: #f0f0f0;
   border: none;
-  font-size: 1.2rem;
+  padding: 10px;
+  font-size: 20px;
   cursor: pointer;
-  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.arrow-btn:hover:not(:disabled) {
+  background-color: #ddd;
+}
+
+.arrow-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .category-list {
   display: flex;
-  gap: 1rem;
+  gap: 16px;
+  width: 90%;
   justify-content: space-evenly;
-  flex: 1;
-  /* flex-wrap:; */
-  overflow-x: scroll;
+  overflow: hidden;
 }
 
 .category-card {
-  flex: 0 0 auto;
-  width: 145px;
+  width: 180px;
   height: 100px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  text-align: center;
-  padding: 1rem;
+  background-color: #f7f7f7;
+  border-radius: 10px;
   cursor: pointer;
-  transition: 0.3s ease;
-  background-color: white;
+  padding: 10px;
+  text-align: center;
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .category-card:hover {
-  border-color: #999;
+  background-color: #eaeaea;
 }
 
 .category-card.active {
-  background-color: #e63946;
+  background-color: #007bff;
   color: white;
-  border: none;
 }
 
 .category-card .icon {
-  font-size: 1.5rem;
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .category-slider h2 {
+    font-size: 1.25rem;
+  }
+
+  .category-card {
+    width: 80px;
+    height: 80px;
+    font-size: 0.75rem;
+  }
+
+  .category-card .icon {
+    font-size: 20px;
+  }
+
+  .arrow-btn {
+    padding: 8px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .categories1234 {
+    gap: 5px;
+  }
+
+  .category-card {
+    width: 70px;
+    height: 70px;
+    font-size: 0.7rem;
+  }
+
+  .category-card .icon {
+    font-size: 18px;
+  }
 }
