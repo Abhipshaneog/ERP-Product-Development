@@ -1,5 +1,4 @@
 
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './OrderConfirmation.css';
@@ -11,10 +10,38 @@ const OrderConfirmation = () => {
   const user_id = '6f94aefc-36a1-4e7d-8c7f-2a81bbffb002'; 
 
   useEffect(() => {
-    axios.get(`/api/v1/orders/${order_id}`)
+   /* axios.get(`/api/v1/orders/${order_id}`)
       .then(res => setOrder(res.data.data))
-      .catch(err => console.error(err));
-  }, [order_id]);
+      .catch(err => {
+        console.error('Failed to fetch order, using mock data.', err);
+  */
+        // --- Mock order object ---
+        const mockOrder = {
+          order_id: "mock-order-1",
+          total_amount: 129.99,
+          payment_method: 'Credit Card',
+          shipping_address: '123 Mock Street, Springfield, USA',
+          OrderItems: [
+            {
+              order_item_id: 'mock-item-1',
+              product_name: 'Mock Product 1',
+              quantity: 2,
+              item_total: 59.98,
+              image_url: "https://woodmart.xtemos.com/wp-content/uploads/2016/08/product-accessories-8-1-430x491.jpg.webp"
+            },
+            {
+              order_item_id: 'mock-item-2',
+              product_name: 'Mock Product 2',
+              quantity: 1,
+              item_total: 70.01,
+              image_url:  "https://woodmart.xtemos.com/wp-content/uploads/2016/09/product-furniture-18.jpg"
+            }
+          ]
+        };
+  
+        setOrder(mockOrder);
+     
+  }, []);
 
   if (!order) return <p>Loading...</p>;
   const items = order.OrderItems || [];

@@ -9,7 +9,7 @@ const Sidebar = ({ setSelectedTab, selectedTab }) => {
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
-    useEffect(() => {
+    useEffect(() => { 
     const handleClickOutside = (event) => {
       if (
         isOpen &&
@@ -57,12 +57,6 @@ const Sidebar = ({ setSelectedTab, selectedTab }) => {
             heading: 'Legal',
             items: [
                 'Terms & Conditions'
-            ]
-        },
-        {
-            heading: '', // No heading for Logout, it's standalone
-            items: [
-                'LogOut'
             ]
         }
     ];

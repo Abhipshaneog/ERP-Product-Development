@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import ConfirmModal from './ConfirmModal';
 import './DeleteAccount.css';
 
 const DeleteAccount = () => {
     const [isChecked, setIsChecked] = useState(false);
+    const [showValidationModal, setShowValidationModal] = useState(false);
+    const [showFinalConfirmModal, setShowFinalConfirmModal] = useState(false);
 
-    const handleDelete = () => {
+    const handleDeleteClick = () => {
         if (!isChecked) {
-            alert('Please confirm that you have read and understood all the points before deleting your account.');
+            setShowValidationModal(true);
             return;
         }
-        if (window.confirm("Are you sure you want to delete your account? This action is irreversible.")) {
-            // Call API to delete account
-            alert("Your account has been deleted.");
-        }
+        setShowFinalConfirmModal(true);
+    };
+
+    const confirmDelete = () => {
+        setShowFinalConfirmModal(false);
+        toast.success("Your account has been deleted.");
     };
 
     return (
@@ -44,7 +50,7 @@ const DeleteAccount = () => {
 
                 <p>By proceeding, you acknowledge and agree to the above points. If you’re certain about deleting your account, please proceed with the request.</p>
 
-                <div className="checkbox-container">
+                 <div className="checkbox-container">
                     <input
                         type="checkbox"
                         id="confirmCheckbox"
@@ -56,9 +62,26 @@ const DeleteAccount = () => {
             </div>
 
             <div className="delete-account-actions">
-                <button className="cancel-btn" onClick={() => alert('Account deletion canceled')}>Keep Account</button>
-                <button className="delete-btn" onClick={handleDelete}>Delete Account</button>
+                {/*    <button className="cancel-btn" onClick={() => window.history.back()}>Keep Account</button>*/}
+                <button className="delete-btn" onClick={handleDeleteClick}>Delete Account</button>
             </div>
+
+            {/* Modals */}
+            <ConfirmModal
+                isOpen={showValidationModal}
+                title="Confirmation Required"
+                message="Please confirm that you have read and understood all the points before deleting your account."
+                onConfirm={() => setShowValidationModal(false)}
+                onCancel={() => setShowValidationModal(false)}
+            />
+
+            <ConfirmModal
+                isOpen={showFinalConfirmModal}
+                title="Delete Account?"
+                message="Are you sure you want to delete your account? This action is irreversible."
+                onConfirm={confirmDelete}
+                onCancel={() => setShowFinalConfirmModal(false)}
+            />
         </div>
     );
 };

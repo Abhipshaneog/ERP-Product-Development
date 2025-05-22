@@ -7,11 +7,13 @@ const OrderDetailsModal = ({ order, onClose }) => {
   const navigate = useNavigate();
 
   const handleTrack = () => {
-    navigate(`/orders/${order.order_id}/items/${order.order_item_id}/track`);
+    navigate("/track");
+   // navigate(`/orders/${order.order_id}/items/${order.order_item_id}/track`);
   };
 
   const handleCancel = () => {
-    navigate(`/orders/${order.order_id}/items/${order.order_item_id}/cancel`);
+    navigate("/cancel");
+   // navigate(`/orders/${order.order_id}/items/${order.order_item_id}/cancel`);
   };
 
   return (

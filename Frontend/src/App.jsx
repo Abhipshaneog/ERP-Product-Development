@@ -18,7 +18,7 @@ import OrderConfirmation from "./components/OrderConfirmation/OrderConfirmation"
 import CancelOrderPage from "./components/OrderHistory/CancelOrderPage";
 import OrderPage from "./components/OrderHistory/OrderPage";
 import TrackOrderPage from "./components/OrderHistory/TrackOrderPage";
-// import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
+import PrivacyPolicy from "./components/PrivacyPolicy/PrivacyPolicy";
 import ProductDetails from "./components/ProductDetails/ProductDetails";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import ShoppingPageIndex from "./components/ShoppingPage/ShoppingPageIndex";
@@ -60,10 +60,14 @@ function App() {
             <Route path="cart/:user_id" element={<CartPage />} />
             <Route path="wishlist" element={<Wishlist />} />
            <Route path="/checkout/:user_id" element={<CheckoutPageMain />} />
-            <Route path="order-confirmation/:order_id" element={<OrderConfirmation />} />
+            <Route path="order-confirmation" element={<OrderConfirmation />} />
             <Route path="orders" element={<OrderPage />} />
-            <Route path="/orders/:orderId/items/:orderItemId/track" element={<TrackOrderPage />} />
-            <Route path="/orders/:orderId/items/:orderItemId/cancel" element={<CancelOrderPage />} />
+              {/*  <Route path="/orders/:orderId/items/:orderItemId/track" element={<TrackOrderPage />} />
+              <Route path="/orders/:orderId/items/:orderItemId/cancel" element={<CancelOrderPage />} />
+              */}
+              <Route path="track" element={<TrackOrderPage />} />
+              <Route path="cancel" element={<CancelOrderPage />} />
+            
             <Route path="privacy-policy" element={<PrivacyPolicy />} />
             <Route path="faq" element={<FAQ />} />
             <Route path="terms-and-conditions" element={<TermsAndConditions />} />

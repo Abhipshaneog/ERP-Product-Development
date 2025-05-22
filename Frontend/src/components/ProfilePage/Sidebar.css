@@ -1,15 +1,18 @@
 /* Sidebar.css */
 
 .sidebar-profile {
-    width: 330px;
-    background-color: #f8f9fa;
-    border-right: 1px solid #ddd;
-    padding: 10px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    position: relative;
-    top: 0;
-    transition: transform 0.3s ease;
+  flex: 1;
+  height: auto;
+  min-height: 100vh; /* Ensures it fills the full height regardless of content */
+  width: 330px;
+  background-color: #f8f9fa;
+  border-right: 1px solid #ddd;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  position: relative;
+  top: 0;
+  transition: transform 0.3s ease;
 }
 .sidebar-toggle {
   display: none;
@@ -28,6 +31,7 @@
  
   display: flex;
   flex-direction: column;
+  
 }
 .sidebar-header {
     font-weight: bold;
