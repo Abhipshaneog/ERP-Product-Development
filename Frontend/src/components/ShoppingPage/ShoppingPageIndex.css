@@ -19,6 +19,7 @@
   transition: transform 0.3s ease;
   padding: 20px;
   z-index: 1000;
+  background-color: white;
 }
 
 .filterSection.active {
@@ -135,7 +136,7 @@
 /* Sidebar toggle: default hidden */
 .toolbar .showSidebarButton {
   display: none;
- /* position: relative;*/
+  /* position: relative;*/
   z-index: 1500;
 }
 

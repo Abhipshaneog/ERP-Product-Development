@@ -1,246 +1,132 @@
-/* General Tab Styles */
-.tabs {
-  font-family: Arial, sans-serif;
-  margin-top: 20px;
-}
-
-.tab-list {
-  display: flex;
-  justify-content: space-around;  /* Ensure tabs are aligned horizontally */
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  border-bottom: 2px solid #ddd;
-}
-
-.tab-item {
-  padding: 12px 20px;  /* Adjust padding for better spacing */
-  cursor: pointer;
-  position: relative;
-  font-size: 16px;  /* Slightly larger font */
-  font-weight: 600;
-  color: #333;
-  transition: background-color 0.3s ease;
-}
-
-.tab-item:hover {
-  background-color: #f5f5f5;
-}
-
-.tab-item.active {
-  color: var(--primary-color);
-  border-bottom: 2px solid var(--primary-color);
-  background-color: #f0f0f0;
-}
-
-.tab-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.arrow {
-  width: 10px;
-  height: 10px;
-  border-left: 2px solid #333;
-  border-bottom: 2px solid #333;
-  transform: rotate(45deg);
-  transition: transform 0.3s ease;
-}
-
-.arrow.up {
-  transform: rotate(-135deg);
-}
-
-.arrow.down {
-  transform: rotate(45deg);
-}
-
-.tab-content-container {
-  margin-top: 20px;
-}
-
-.tab-content {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
+.tabs-container {
+  border: 1px solid #ddd;
+  border-radius: 8px;
   background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  margin-top: 10px; /* Ensure space between tabs and content */
-}
-
-.tab-content p {
-  color: #555;
-  font-size: 14px;
-  line-height: 1.5;
-}
-/* Reviews Section Styles */
-.reviews-tab {
   padding: 20px;
-  background: #fff;
-  border-radius: 8px;
   margin-top: 20px;
 }
 
-.rating-summary {
-  margin-bottom: 30px;
-  padding: 20px;
-  background: #f9f9f9;
-  border-radius: 8px;
-}
-
-.rating-summary h3 {
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.rating-distribution {
-  margin-top: 15px;
-}
-
-.rating-bar {
+.tab-buttons {
   display: flex;
-  align-items: center;
-  margin: 8px 0;
   gap: 10px;
-}
-
-.rating-bar progress {
-  flex-grow: 1;
-  height: 8px;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.rating-bar progress::-webkit-progress-bar {
-  background-color: #f0f0f0;
-}
-
-.rating-bar progress::-webkit-progress-value {
-  background-color: #ffc107;
-}
-
-.review-form {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  margin-bottom: 30px;
-}
-
-.review-form h3 {
   margin-bottom: 20px;
 }
 
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
+.tab-buttons button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #eee;
+  cursor: pointer;
+  border-radius: 5px;
   font-weight: 600;
-  color: #333;
+  transition: background-color 0.3s;
 }
 
-.form-group input,
-.form-group textarea {
+.tab-buttons button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.tab-buttons button:hover {
+  background-color: #ddd;
+}
+
+.tab-content {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.additional-info-tab table {
   width: 100%;
+  border-collapse: collapse;
+}
+
+.additional-info-tab td {
   padding: 10px;
   border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
 }
 
-.form-group textarea {
-  min-height: 100px;
-  resize: vertical;
-}
-
-.review-form button {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background 0.3s;
-}
-
-.review-form button:hover {
-  background: #0056b3;
-}
-
-.review-form button:disabled {
-  background: #cccccc;
-  cursor: not-allowed;
+.reviews-tab {
+  margin-top: 20px;
 }
 
 .reviews-list {
-  margin-top: 30px;
-}
-
-.review-card {
-  padding: 15px 0;
-  border-bottom: 1px solid #eee;
+  list-style: none;
+  padding: 20px;
 }
 
 .review-header {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.reviewer {
+  gap: 10px;
   font-weight: bold;
-  color: #333;
 }
 
-.review-date {
-  color: #666;
-  font-size: 0.9em;
+.review-form {
+  margin-top: 20px;
+  border-top: 1px solid #ccc;
+  padding: 20px;
 }
 
-.review-comment {
-  color: #333;
-  line-height: 1.5;
-  margin-top: 5px;
+.rating-summary {
+  padding: 20px;
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .tab-list {
-    flex-direction: column;  /* Stack tabs vertically */
-  }
+.review-form h3 {
+  margin-bottom: 10px;
+}
 
-  .tab-item {
-    padding: 10px 15px;
-    font-size: 14px;
-  }
+.review-form .form-group {
+  margin-bottom: 15px;
+}
 
-  .tab-content {
-    padding: 15px;
-  }
+.review-form input,
+.review-form textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
-  .review-form input,
-  .review-form textarea {
-    font-size: 13px;
-  }
+.review-form button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-  .review-form button {
-    font-size: 13px;
-    padding: 8px 15px;
-  }
+.review-form button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
 
-  .review-card {
-    padding: 12px;
-  }
+.toggle-review-form-btn {
+  margin-top: 20px;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
 
-  .review-header {
-    font-size: 0.9rem;
-  }
+.toggle-review-form-btn:hover {
+  background-color: #0056b3;
+}
+.show-review-form-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.show-review-form-btn:hover {
+  background-color: #0056b3;
 }

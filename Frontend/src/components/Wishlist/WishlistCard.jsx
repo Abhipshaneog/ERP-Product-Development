@@ -34,28 +34,35 @@ const WishlistCard = ({ item, onRemove, onMoveToCart }) => {
 
       {/* Product Image */}
       <div className="wishlist-card-image">
-        {image ? <img src={image} alt={product.product_name} /> : <span>No Image</span>}
+        {image ? (
+          <img src={image} alt={product.product_name} />
+        ) : (
+          <span>No Image</span>
+        )}
       </div>
 
       {/* Product Info */}
       <div className="wishlist-card-info">
         <h4>{product.product_name}</h4>
         <p className="wishlist-brand">{product.Brand?.brand_name}</p>
-        <p className="wishlist-category">{product.ProductCategory?.category_name}</p>
+        <p className="wishlist-category">
+          {product.ProductCategory?.category_name}
+        </p>
         <div className="price-section">
           <span className="original-price">₹{productItem?.original_price}</span>
           <span className="sale-price">₹{productItem?.sale_price}</span>
         </div>
-        <div className={`stock-status ${stock > 0 ? "in-stock" : "out-of-stock"}`}>
+        <div
+          className={`stock-status ${stock > 0 ? "in-stock" : "out-of-stock"}`}
+        >
           {stock > 0 ? "In Stock" : "Out of Stock"}
         </div>
       </div>
 
       {/* Bottom Icons */}
       <div className="wishlist-card-bottom-icons">
-        <FaHeart className="wishlist-heart-icon" title="In Wishlist" />
         <button
-          className="wishlist-action-btn"
+          className="wishlist-action-btn move-to-cart-btn"
           onClick={(e) => {
             e.stopPropagation();
             onMoveToCart(item.id);

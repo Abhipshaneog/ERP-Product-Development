@@ -1,7 +1,7 @@
 import "./App.css";
 
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 //import AboutIndex from "./components/AboutUsPage/AboutIndex";
 import AboutUs from "./components/AboutUs/AboutUs";
 import CartPage from "./components/Cart/CartPage";
