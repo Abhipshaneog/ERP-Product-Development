@@ -22,6 +22,7 @@ const initialFormState = {
     }
 };
 
+
 const states = [
     'Assam', 'Bihar', 'Delhi', 'Goa', 'Gujarat', 'Karnataka', 'Maharashtra', 'Tamil Nadu', 'West Bengal'
 ];
@@ -29,6 +30,7 @@ const countries = ['India', 'United States', 'Canada', 'Australia', 'United King
 
 const AddressModal = ({ isOpen, onClose, onSave, addressToEdit }) => {
     const [formData, setFormData] = useState(initialFormState);
+    const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
     useEffect(() => {
         if (addressToEdit) {
@@ -60,10 +62,11 @@ const AddressModal = ({ isOpen, onClose, onSave, addressToEdit }) => {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
             async (position) => {
-              const { latitude, longitude } = position.coords;
+                  const { latitude, longitude } = position.coords;
+                 
               console.log('Latitude:', latitude, 'Longitude:', longitude);
               try {
-                const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyC2cSFSs6KHJ6V49nS3wbxfSLrgzVEMFSA`);
+                const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`);
                   const data = await response.json();
                   console.log('Full Geocode Data:', data);
 
