@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './Reviews.css';
 
 const Reviews = () => {
@@ -48,7 +48,19 @@ const Reviews = () => {
                 {reviews.map(review => (
                     <div key={review.id} className="review-item">
                         <p><strong>{review.product}</strong></p>
-                        <p>⭐ {review.rating}</p>
+                         {/* Star rating display */}
+                        <div className="star-list">
+                            {[1, 2, 3, 4, 5].map(star => (
+                            <span
+                                key={star}
+                                className={`star-lists ${star <= review.rating ? 'gold' : ''}`}
+                                aria-label={`${star} Star`}
+                                role="img"
+                            >
+                                ★
+                            </span>
+                            ))}
+                        </div>
                         <p>{review.review}</p>
                         <p className="review-date">{review.date}</p>
                         <button onClick={() => openEditModal(review)}>Edit</button>
@@ -58,28 +70,40 @@ const Reviews = () => {
             </div>
 
             {editModalOpen && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <h3>Edit Review</h3>
-                        <label>Rating:</label>
-                        <input 
-                            type="number" 
-                            min="1" max="5" 
-                            value={editedRating} 
-                            onChange={(e) => setEditedRating(Number(e.target.value))} 
-                        />
-                        <label>Review:</label>
-                        <textarea value={editedReview} onChange={(e) => setEditedReview(e.target.value)}></textarea>
-                        <div className="modal-buttons">
-                        <button onClick={handleEditSave}>Save</button>
-                        <button onClick={() => setEditModalOpen(false)}>Cancel</button>
-                        </div>
-                    </div>
+            <div className="modal-review">
+                <div className="modal-content">
+                <h3>Edit Review</h3>
+                <label>Rating:</label>
+                <div className="star-rating">
+                    {[1, 2, 3, 4, 5].map(star => (
+                    <span
+                        key={star}
+                        className={`star ${star <= editedRating ? 'gold' : ''}`}
+                        onClick={() => setEditedRating(star)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') setEditedRating(star); }}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`${star} Star`}
+                    >
+                        ★
+                    </span>
+                    ))}
                 </div>
+
+                {/* Move these inside the same modal-content div */}
+                <label>Review:</label>
+                <textarea value={editedReview} onChange={(e) => setEditedReview(e.target.value)}></textarea>
+                <div className="modal-buttons">
+                    <button onClick={handleEditSave}>Save</button>
+                    <button onClick={() => setEditModalOpen(false)}>Cancel</button>
+                </div>
+                </div>
+            </div>
             )}
 
-            {deleteModalOpen && (
-                <div className="modal">
+
+{deleteModalOpen && (
+                <div className="modal-review">
                     <div className="modal-content">
                         <h3>Are you sure you want to delete this review?</h3>
                         <div className="modal-buttons">

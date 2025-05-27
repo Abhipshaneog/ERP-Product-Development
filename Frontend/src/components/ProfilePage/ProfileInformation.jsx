@@ -1,18 +1,33 @@
-import React, { useState } from 'react';
-import './ProfileInformation.css'; // Import the CSS file
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import './ProfileInformation.css';
 
 const ProfileInformation = () => {
-    const [form, setForm] = useState({
-        firstName: '',
-        lastName: '',
-        gender: '',
-        email: '',
-        phone: '',
+    // Dummy initial data
+    const initialData = {
+        firstName: 'Abhipsha',
+        lastName: 'Neog',
+        gender: 'Female',
+        email: 'abhipsha@example.com',
+        phone: '9876543210',
         altPhone: ''
-    });
+    };
+
+    const [form, setForm] = useState(initialData);
+    const [isEditing, setIsEditing] = useState(false);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
+    };
+
+    const handleEdit = () => {
+        setIsEditing(true);
+    };
+
+    const handleSave = () => {
+        setIsEditing(false);
+        toast.success('Changes updated and saved!');
+        // Normally, you'd send this data to the backend here
     };
 
     return (
@@ -21,49 +36,75 @@ const ProfileInformation = () => {
 
             <div className="profile-info-row">
                 <div className="profile-info-field">
-                    <label>First Name*</label>
+                    <label>First Name <span className="required">*</span></label>
                     <input
                         type="text"
                         name="firstName"
                         value={form.firstName}
                         onChange={handleChange}
+                        disabled={!isEditing}
+                        required
                     />
                 </div>
                 <div className="profile-info-field">
-                    <label>Last Name</label>
+                    <label>Last Name <span className="required">*</span></label>
                     <input
                         type="text"
                         name="lastName"
                         value={form.lastName}
                         onChange={handleChange}
+                        disabled={!isEditing}
+                        required
                     />
                 </div>
             </div>
 
             <div className="profile-info-gender">
-                <label>Gender</label>
-                <label><input type="radio" name="gender" value="Male" onChange={handleChange} /> Male</label>
-                <label><input type="radio" name="gender" value="Female" onChange={handleChange} /> Female</label>
+                <label className='gender-field-heading'>Gender <span className="required">*</span></label>
+                <label>
+                    <input
+                        type="radio"
+                        name="gender"
+                        value="Male"
+                        checked={form.gender === 'Male'}
+                        onChange={handleChange}
+                        disabled={!isEditing}
+                    /> <span>Male</span>
+                </label>
+                <label>
+                    <input
+                        type="radio"
+                        name="gender"
+                        value="Female"
+                        checked={form.gender === 'Female'}
+                        onChange={handleChange}
+                        disabled={!isEditing}
+                    /> <span>Female</span>
+                </label>
             </div>
 
             <div className="profile-info-field">
-                <label>E-Mail Address</label>
+                <label>E-Mail Address <span className="required">*</span></label>
                 <input
                     type="email"
                     name="email"
                     value={form.email}
                     onChange={handleChange}
+                    disabled={!isEditing}
+                    required
                 />
             </div>
 
             <div className="profile-info-field">
-                <label>Phone Number</label>
+                <label>Phone Number <span className="required">*</span></label>
                 <input
                     type="text"
                     name="phone"
                     value={form.phone}
                     onChange={handleChange}
+                    disabled={!isEditing}
                     placeholder="10-digits number"
+                    required
                 />
             </div>
 
@@ -74,14 +115,20 @@ const ProfileInformation = () => {
                     name="altPhone"
                     value={form.altPhone}
                     onChange={handleChange}
+                    disabled={!isEditing}
                     placeholder="10-digits number"
                 />
             </div>
 
             <div className="profile-info-buttons">
-                <button className="edit-button">EDIT</button>
-                <button className="save-button">Save Details</button>
+                {!isEditing ? (
+                    <button className="edit-button" onClick={handleEdit}>EDIT</button>
+                ) : (
+                    <button className="save-button" onClick={handleSave}>Save Details</button>
+                )}
             </div>
+
+           
         </div>
     );
 };

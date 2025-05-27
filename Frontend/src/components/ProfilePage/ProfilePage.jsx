@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import OrderPage from '../OrderHistory/OrderPage';
+import TermsAndConditions from '../TermsAndConditions/TermsAndConditions';
 import Wishlist from '../Wishlist/Wishlist';
 import CouponsSection from './CouponsSection';
 import DeleteAccount from './DeleteAccount';
@@ -9,7 +11,7 @@ import Reviews from './Reviews';
 import SavedCards from './SavedCards';
 import SavedUPI from './SavedUPI';
 import Sidebar from './Sidebar';
-
+ 
 const ProfilePage = () => {
     const [selectedTab, setSelectedTab] = useState('Profile Information');
 
@@ -21,6 +23,8 @@ const ProfilePage = () => {
                     return <ManageAddress />;
                 case 'Delete Account':
                     return <DeleteAccount />;
+                case 'Orders & Returns':
+                    return <OrderPage />;
                 case 'My Reviews & Rating' :
                      return <Reviews/>;  
                 case 'My Coupons':
@@ -30,7 +34,9 @@ const ProfilePage = () => {
                 case 'Saved UPIs':
                      return <SavedUPI/>;
                 case 'My Wishlist':
-                    return <Wishlist/>;
+                return <Wishlist />;
+            case 'Terms & Conditions':
+                return <TermsAndConditions />;
             // Other cases will be added later
             default:
                 return <ProfileInformation />;

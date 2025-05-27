@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { toast } from "react-toastify";
 import "./SavedCards.css"; // Import CSS file
 
 const maskCardNumber = (cardNumber) => {
@@ -16,7 +17,7 @@ const SavedCards = () => {
         { id: 5, bank: "HDFC Bank", cardNumber: "1234567812341234", expiry: "06/27" },
         { id: 6, bank: "SBI Bank", cardNumber: "5678567856785678", expiry: "12/26" },
     ]);
-
+ 
     const [newCard, setNewCard] = useState({ bank: "", cardNumber: "", expiry: "" });
     const [editId, setEditId] = useState(null);
     const [modalType, setModalType] = useState(null);
@@ -24,8 +25,12 @@ const SavedCards = () => {
 
     // Handle adding a new card
     const handleAddCard = () => {
-        if (!newCard.bank || newCard.cardNumber.length !== 16 || !newCard.expiry) return;
-        setCardList([...cardList, { id: Date.now(), ...newCard }]); // Store full card number
+        if (!newCard.bank || newCard.cardNumber.length !== 16 || !newCard.expiry) {
+            toast.error("Please fill all card details correctly!");
+            return;
+        }
+        setCardList([...cardList, { id: Date.now(), ...newCard }]);
+        toast.success("New card added successfully!");
         setNewCard({ bank: "", cardNumber: "", expiry: "" });
         setModalType(null);
     };
@@ -33,6 +38,7 @@ const SavedCards = () => {
     // Handle deleting a card after confirmation
     const handleDeleteCard = () => {
         setCardList(cardList.filter(card => card.id !== deleteCardId));
+        toast.success("Card deleted successfully!");
         setModalType(null);
     };
 
@@ -46,10 +52,14 @@ const SavedCards = () => {
 
     // Handle saving an edited card
     const handleSaveEdit = () => {
-        if (newCard.cardNumber.length !== 16) return;
+        if (newCard.cardNumber.length !== 16) {
+            toast.error("Card number must be 16 digits!");
+            return;
+        }
         setCardList(cardList.map(card => 
             card.id === editId ? { ...newCard, id: editId } : card
         ));
+        toast.success("Card updated successfully!");
         setEditId(null);
         setNewCard({ bank: "", cardNumber: "", expiry: "" });
         setModalType(null);
@@ -58,7 +68,11 @@ const SavedCards = () => {
     return (
         <div className="cards-container">
             <h2>Manage Saved Cards</h2>
-            <button className="add-btn" onClick={() => setModalType("add")}>+ Add New Card</button>
+            <div className="add-cards-button-container">
+            <button className="add-btn" onClick={() => {
+                setNewCard({ bank: "", cardNumber: "", expiry: "" }); setModalType("add")
+                }}>➕ Add New Card</button>
+                </div>
 
             <div className="cards-list">
                 {cardList.map((card) => (

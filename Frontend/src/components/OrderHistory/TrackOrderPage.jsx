@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchShippingTracking } from '../../services/shippingApi';
 import './TrackOrderPage.css';
 
 
@@ -14,8 +13,50 @@ const TrackOrderPage = () => {
   useEffect(() => {
     const loadTrackingData = async () => {
       try {
-        const data = await fetchShippingTracking(orderId, itemId);
-        setTrackingData(data);
+      //  const data = await fetchShippingTracking(orderId, itemId);
+       // setTrackingData(data);
+        const mockData = {
+          product: {
+            name: 'Mock Running Shoes',
+            size: '42',
+            image: "https://woodmart.xtemos.com/wp-content/uploads/2016/08/product-accessories-8-1-430x491.jpg.webp",
+            unit_price: 59.99,
+            quantity: 1,
+            item_total: 59.99
+          },
+          trackingEvents: [
+            {
+              status: 'Order Placed',
+              date: '2025-05-18',
+              details: ['Order confirmed and being processed']
+            },
+            {
+              status: 'Shipped',
+              date: '2025-05-19',
+              details: ['Package departed from warehouse']
+            },
+            {
+              status: 'In Transit',
+              date: '2025-05-20',
+              details: ['Arrived at local distribution center']
+            },
+            {
+              status: 'Out for Delivery',
+              date: '2025-05-21',
+              details: ['Courier is on the way']
+            },
+            {
+              status: 'Delivered',
+              date: '2025-05-21',
+              details: ['Package delivered to your address', 'Left at front door']
+            }           
+          ]
+        };
+
+        // Uncomment below line when real API is ready:
+        // const data = await fetchShippingTracking(orderId, itemId);
+
+        setTrackingData(mockData); // ← use mockData here
       } catch (err) {
         setError('Unable to load tracking information.');
         console.error(err);

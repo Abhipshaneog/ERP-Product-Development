@@ -96,47 +96,58 @@ const sections = [
 ];
 
 const ContactUs = () => {
- const [openIndexes, setOpenIndexes] = useState({});
+  const [openIndexes, setOpenIndexes] = useState({});
+ 
 
   const toggleAnswer = (sectionIndex, questionIndex) => {
     const key = `${sectionIndex}-${questionIndex}`;
-    setOpenIndexes((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
-  };
+    setOpenIndexes((prev) => {
+      const isAlreadyOpen = prev[key];
+    return isAlreadyOpen ? {} : { [key]: true }; // Only one open at a time
+  });
+};
+
+const isSectionActive = (sectionIndex) => {
+  return Object.keys(openIndexes).some(key => key.startsWith(`${sectionIndex}-`) && openIndexes[key]);
+};
 
   return (
     <div className="contact-us-container">
       <h1>Galvinus Help Center | 24×7 Customer Support</h1>
-      <p className="description">Welcome to the Galvinus Help Center — your 24×7 destination for quick support, answers, and guidance.
-Whether you need help managing your account, tracking a delivery, processing a return, or resolving a payment issue, we’ve got you covered. Explore categorized FAQs across Account, Orders, Refunds, Payments, Returns, and Cancellations. Each section offers clear solutions tailored to common concerns so you can resolve issues instantly — without waiting.</p>
+      <p className="description">
+        Welcome to the Galvinus Help Center — your 24×7 destination for quick support, answers, and guidance...
+      </p>
       <p className="subtitle">Choose the type of issue you need help with</p>
 
-      {sections.map((section, sectionIndex) => (
-        <div className="section" key={section.category}>
-        <div className="section-row">
-          <div className="section-title">{section.category}</div>
-          <div className="section-content">
-            {section.questions.map((item, questionIndex) => {
-              const isOpen = openIndexes[`${sectionIndex}-${questionIndex}`];
-              return (
-                <div className="faq-item" key={item.question}>
-                  <div
-                    className="question"
-                    onClick={() => toggleAnswer(sectionIndex, questionIndex)}
-                  >
-                    {item.question}
-                  </div>
-                  {isOpen && <div className="answer">{item.answer}</div>}
-                </div>
-              );
-            })}
+      {sections.map((section, sectionIndex) => {
+        const active = isSectionActive(sectionIndex);
+        return (
+          <div className="section" key={section.category}>
+            <div className="section-row">
+              <div className={"section-title-contact"}>
+                {section.category}
+              </div>
+              <div className="thin-divider" />
+              <div className={`section-content ${active ? 'active' : ''}`}>
+                {section.questions.map((item, questionIndex) => {
+                  const isOpen = openIndexes[`${sectionIndex}-${questionIndex}`];
+                  return (
+                    <div className="faq-item" key={item.question}>
+                      <div
+                        className="question"
+                        onClick={() => toggleAnswer(sectionIndex, questionIndex)}
+                      >
+                        {item.question}
+                      </div>
+                      {isOpen && <div className="answer">{item.answer}</div>}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-
-      ))}
+        );
+      })}
     </div>
   );
 };
