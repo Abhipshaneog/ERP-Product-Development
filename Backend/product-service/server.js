@@ -6,19 +6,19 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const productRoutes = require("./routes/productRoutes");
 const brandRoutes = require("./routes/brandRoutes");
-const colourRoutes = require('./routes/colourRoutes');
-const productReviewRoutes = require('./routes/productReviewRoutes');
-const ratingTypeRoutes = require('./routes/ratingTypeRoutes');
-const sizeCategoryRoutes = require('./routes/sizeCategoryRoutes');
-const sizeOptionRoutes = require('./routes/sizeOptionRoutes');
-const productImageRoutes=require('./routes/productImageRoutes');
-const productItemRoutes = require('./routes/productItemRoutes');
-const productCategoryRoutes = require('./routes/productCategoryRoutes');
+const colourRoutes = require("./routes/colourRoutes");
+const productReviewRoutes = require("./routes/productReviewRoutes");
+const ratingTypeRoutes = require("./routes/ratingTypeRoutes");
+const sizeCategoryRoutes = require("./routes/sizeCategoryRoutes");
+const sizeOptionRoutes = require("./routes/sizeOptionRoutes");
+const productImageRoutes = require("./routes/productImageRoutes");
+const productItemRoutes = require("./routes/productItemRoutes");
+const productCategoryRoutes = require("./routes/productCategoryRoutes");
 //const productReviewRoutes = require('./routes/productReviewRoutes');
-const ratingProductRoutes = require('./routes/ratingProductRoutes');
+const ratingProductRoutes = require("./routes/ratingProductRoutes");
 const homepageRoutes = require("./routes/homepage");
 const { connectDB } = require("./config/db");
-const { redisClient } = require("./config/redis");
+// const { redisClient } = require("./config/redis");
 //const { ApolloServer } = require("apollo-server-express");
 const typeDefs = require("./graphql/schema");
 const resolvers = require("./graphql/resolvers");
@@ -27,7 +27,7 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(morgan("dev")); 
+app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -36,7 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 connectDB();
 
 // Connect Redis
-redisClient.connect().catch(console.error);
+// redisClient.connect().catch(console.error);
 
 // Initialize Apollo Server (v4)
 const server = new ApolloServer({ typeDefs, resolvers });
