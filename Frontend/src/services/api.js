@@ -21,7 +21,7 @@ export const fetchAllProducts = async (filters = {}) => {
 export const fetchProductById = async (id) => {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}/products/ca97d9f6-7077-4880-be88-5e8e21ca06ac`
+      `${API_BASE_URL}/products/${id}`
     );
     return response.data.data; // Extracting 'data' from the response
   } catch (error) {

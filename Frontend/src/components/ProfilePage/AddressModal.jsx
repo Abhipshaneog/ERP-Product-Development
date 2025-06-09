@@ -146,10 +146,7 @@ const AddressModal = ({ isOpen, onClose, onSave, addressToEdit }) => {
 
                 <div className="form-row">
                     <input type="text" name="address" placeholder="House No., Building, Street *" value={formData.address} onChange={handleChange} required />
-                    <button className="use-location-btn" onClick={handleUseCurrentLocation}>
-                        <FaMapMarkerAlt style={{ marginRight: '6px' }} />
-                        Use My Current Location
-                    </button>
+                    
                 </div>
 
                 <div className="form-row">
@@ -169,6 +166,10 @@ const AddressModal = ({ isOpen, onClose, onSave, addressToEdit }) => {
                             <option key={country} value={country}>{country}</option>
                         ))}
                     </select>
+                    <button className="use-location-btn" onClick={handleUseCurrentLocation}>
+                        <FaMapMarkerAlt style={{ marginRight: '6px' }} />
+                        Use My Current Location
+                    </button>
                     <label className="checkbox-label">
                         <input type="checkbox" name="default" checked={formData.default} onChange={handleChange} />
                         Make this my default address

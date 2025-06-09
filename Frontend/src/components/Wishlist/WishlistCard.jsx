@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { FaHeart, FaShoppingCart, FaTimes } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "./WishlistCard.css";
 
@@ -52,24 +52,24 @@ const WishlistCard = ({ item, onRemove, onMoveToCart }) => {
           <span className="original-price">₹{productItem?.original_price}</span>
           <span className="sale-price">₹{productItem?.sale_price}</span>
         </div>
-        <div
+        {/* <div
           className={`stock-status ${stock > 0 ? "in-stock" : "out-of-stock"}`}
         >
           {stock > 0 ? "In Stock" : "Out of Stock"}
-        </div>
+        </div> */}
       </div>
 
       {/* Bottom Icons */}
       <div className="wishlist-card-bottom-icons">
         <button
-          className="wishlist-action-btn move-to-cart-btn"
+          className="move-to-cart-btn"
           onClick={(e) => {
             e.stopPropagation();
             onMoveToCart(item.id);
           }}
           title="Move to Cart"
         >
-          <FaShoppingCart />
+          Move to Cart
         </button>
       </div>
     </div>

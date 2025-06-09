@@ -11,7 +11,7 @@ const Tabs = ({ activeTab, setActiveTab, productId, product }) => {
     name: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [openTab, setOpenTab] = useState(null);
+  const [openTab, setOpenTab] = useState(true);
   const [showReviewForm, setShowReviewForm] = useState(false); // ✅ New state
 
   // Fetch reviews when tab mounts or product changes

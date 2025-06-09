@@ -1,4 +1,3 @@
-import React from "react";
 import EmptyCartImage from "./EMPTYCART.png";
 import "./emptyCartMessage.css";
 
@@ -6,7 +5,7 @@ const EmptyCartMessage = () => {
   return (
     <div className="empty-cart">
       <img src={EmptyCartImage} alt="Empty Cart" />
-      <h1>Your cart is currently empty.</h1>
+      <h2>Your cart is currently empty.</h2>
       <div className="wd-empty-page-text">
 				Before proceed to checkout you must add some products to your shopping cart.
         <br /> 

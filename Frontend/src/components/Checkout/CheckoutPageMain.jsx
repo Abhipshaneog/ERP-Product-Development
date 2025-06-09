@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import DeliveryAddressSection from "../Cart/DeliveryAddressSection"; // Move your address logic into a reusable component
 import { useCart } from "../Context/CartContext";
-import AddressPage from "./AddressPage"; // Move your address logic into a reusable component
 import './CheckoutPageMain.css';
 import RazorpayCheckoutButton from "./RazorpayCheckoutButton";
 import YourOrder from "./YourOrder"; // Reuse your existing summary component
@@ -12,20 +12,9 @@ const CheckoutPageMain = () => {
   console.log("🚀 user_id from route:", user_id);
   const { cart } = useCart();
   const cartItems = cart?.CartItems || [];
-  const savedAddress = localStorage.getItem("shippingAddress");
-  const mockAddress = savedAddress
-    ? JSON.parse(savedAddress)
-    : {
-        fullName: "Test User",
-        phone: "9999999999",
-        pincode: "110001",
-        state: "Delhi",
-        city: "New Delhi",
-        street: "123 Fake Street, Near Metro Station",
-      };
-
   
-  const [address, setAddress] = useState(mockAddress);
+  
+  const [address, setAddress] = useState(null);
   const [showPayment, setShowPayment] = useState(false);
   const [orderData, setOrderData] = useState(null);
 
@@ -48,35 +37,37 @@ const CheckoutPageMain = () => {
   }, [orderData]);
 
   return (
-    <div className="checkout-container">
+    <div className="checkout-main-container">
+    <h2 className="checkout-heading">Checkout</h2>
+
+    {/* Section 1: Delivery Address */}
+    <div className="checkout-section">
       
-      {!showPayment ? (
-  <>
-    {console.log("🛠 Showing Address Form")}
-    <div className="address-section">
-      <AddressPage onSubmit={handleAddressSubmit}  defaultAddress={mockAddress} />
+      <DeliveryAddressSection 
+          onAddressSubmit={handleAddressSubmit}
+      />
     </div>
-  </>
-) : (
-  <>
-    {console.log("💳 Showing Payment Section")}
-    <div className="payment-section">
-      <h2 className="payment-heading">Ready to Pay: CLICK HERE TO REACH THE PAYMENT GATEWAY</h2>
-      <RazorpayCheckoutButton  
-      user_id={user_id}
-      address={address} 
-      setOrderData={setOrderData}  />
+
+    {/* Section 2: Cart Summary */}
+    <div className="checkout-section">
+      
+      <YourOrder cartItems={cartItems} />
     </div>
-  </>
-)}
 
-
-      {/* Right Section - Cart Summary */}
-      <div className="checkout-right">
-        <YourOrder  cartItems={cartItems} setOrderData={setOrderData}/>
-      </div>
+    {/* Section 3: Continue Button */}
+    {showPayment && address && (
+        <div className="payment-section">
+         
+          <RazorpayCheckoutButton  
+            user_id={user_id}
+            address={address}
+            setOrderData={setOrderData}
+          />
+        </div>
+      )}
     </div>
   );
 };
+
 
 export default CheckoutPageMain;

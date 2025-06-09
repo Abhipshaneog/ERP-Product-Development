@@ -1,87 +1,70 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { user_id } from "../../services/cartApi";
 import "./cartSummary.css";
 
-const CartSummary = ({ cartItems }) => {
-    const [shipping, setShipping] = useState(20);
-    const navigate = useNavigate();
+const CartSummary = ({ cartItems, appliedCoupon, handleCheckout  }) => {
+    
+  const navigate = useNavigate();
+  // const [couponDiscount, setCouponDiscount] = useState(10); // assuming ₹10 for now
+  const [productDiscount, setProductDiscount] = useState(30); // assuming ₹30 for now
+  const [deliveryCharges, setDeliveryCharges] = useState(30); // fixed
+  const [platformCharges] = useState(0); // fixed
+
+
+  const couponDiscount = appliedCoupon?.discount || 0;
+
 
     const subtotal = cartItems.reduce((total, item) => {
       const price = parseFloat(item.unit_price);
       return total + price * item.quantity;
     }, 0);
    
-    const total= subtotal + shipping;
-    // Generate estimated delivery: 5-7 days from now
-const estimatedDelivery = new Date();
-estimatedDelivery.setDate(estimatedDelivery.getDate() + 5);
-const deliveryDate = estimatedDelivery.toDateString();
+    const total= subtotal - productDiscount - couponDiscount + deliveryCharges + platformCharges;;
 
    
-    const handleCheckout = () => {
-      // Navigate to the Checkout page
-      navigate(`/checkout/${user_id}`);
-    };
+    // const handleCheckout = () => {
+    //   // Navigate to the Checkout page
+    //   navigate(`/checkout/${user_id}`);
+    // };
 
   return (
     <div className="cart-summary-container">
-      <h3>Cart Items</h3>
-
-{cartItems.map((item) => (
-  <div key={item.cart_items_id} className="cart-item-row">
-
-    <div className="cart-item-details">
-      <p className="product-name">{item.product_info?.name}</p>
-      <p className="product-meta">
-        Color: {item.product_info?.colour} | Size: {item.product_info?.size}
-      </p>
-      <p className="product-meta">Unit Price: ₹{parseFloat(item.unit_price).toFixed(2)}</p>
-      <p className="product-meta">Quantity: {item.quantity}</p>
-      <p className="product-meta"><strong>Item Total: ₹{(item.quantity * parseFloat(item.unit_price)).toFixed(2)}</strong></p>
-    </div>
-  </div>
-))}
-
-<hr />
+      {/* Coupons for You */}
+      {/* <div className="coupon-section">
+        <h3>Coupons for you</h3>
+        <div className="apply-coupon">
+          <span className="coupon-icon">🏷️</span>
+          <span className="coupon-text">Apply Coupons</span>
+          <button className="apply-btn">Apply</button>
+        </div>
+      </div> */}
+      
       <h3>Cart Totals</h3>
       <div className="summary-row">
-      <span>Subtotal: </span>
+      <span>Original Price</span>
       <span>₹{subtotal.toFixed(2)}</span>
       </div>
       <div className="summary-row">
-        <span>Shipping:</span>
-        <div className="shipping-options">
-          <label>
-            <input
-              type="radio"
-              name="shipping"
-              value="20"
-              checked={shipping === 20}
-              onChange={() => setShipping(20)}
-            />
-            Flat rate: $20.00
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="shipping"
-              value="25"
-              checked={shipping === 25}
-              onChange={() => setShipping(25)}
-            />
-            Local pickup: $25.00
-          </label>
-        </div>
+        <span>Discount</span>
+        <span>-₹{productDiscount.toFixed(2)}</span>
       </div>
       <div className="summary-row">
-      <span>Est. Delivery:</span>
-      <span>{deliveryDate}</span>
-    </div>
+        <span>Coupon Discount</span>
+        <span>-₹{couponDiscount.toFixed(2)}</span>
+      </div>
+      <div className="summary-row">
+        <span>Delivery Charges</span>
+        <span>+₹{deliveryCharges.toFixed(2)}</span>
+      </div>
+      <div className="summary-row">
+        <span>Platform Charges</span>
+        <span>+₹{platformCharges.toFixed(2)}</span>
+      </div>
+      
       <div className="total-row">
         <span>Total: </span>
-        <span>₹{total.toFixed(2)}</span>
+        <span><strong>₹{total.toFixed(2)}</strong></span>
       </div>
       <div className="checkout">
       <button className="checkout-btn" onClick={handleCheckout}>Proceed to Checkout</button>
@@ -90,7 +73,7 @@ const deliveryDate = estimatedDelivery.toDateString();
   );
 };
 
-CartSummary.propTypes = {
+CartSummary.propTypes = { 
   cartItems: PropTypes.arrayOf(
     PropTypes.shape({
       cart_items_id: PropTypes.string.isRequired,
@@ -108,6 +91,29 @@ CartSummary.propTypes = {
       }).isRequired,
     })
   ).isRequired,
+  appliedCoupon: PropTypes.shape({
+    discount: PropTypes.number.isRequired,
+  }),
+  handleCheckout: PropTypes.func.isRequired,
 };
 
 export default CartSummary;
+
+{/* <h3>Cart Items</h3>
+
+{cartItems.map((item) => (
+  <div key={item.cart_items_id} className="cart-item-row">
+
+    <div className="cart-item-details">
+      <p className="product-name">{item.product_info?.name}</p>
+      <p className="product-meta">
+        Color: {item.product_info?.colour} | Size: {item.product_info?.size}
+      </p>
+      <p className="product-meta">Unit Price: ₹{parseFloat(item.unit_price).toFixed(2)}</p>
+      <p className="product-meta">Quantity: {item.quantity}</p>
+      <p className="product-meta"><strong>Item Total: ₹{(item.quantity * parseFloat(item.unit_price)).toFixed(2)}</strong></p>
+    </div>
+  </div>
+))}
+
+<hr /> */}

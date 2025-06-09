@@ -18,22 +18,28 @@ const OrderConfirmation = () => {
         // --- Mock order object ---
         const mockOrder = {
           order_id: "mock-order-1",
-          total_amount: 129.99,
-          payment_method: 'Credit Card',
+          // total_amount: 900,
+          discount_price: 30,
+          coupon_discount: 100,
+          shipping_price: 30,
+          payment_method: 'UPI Method',
           shipping_address: '123 Mock Street, Springfield, USA',
+          // total_amount: 129.99,
+          // payment_method: 'Credit Card',
+          // shipping_address: '123 Mock Street, Springfield, USA',
           OrderItems: [
             {
               order_item_id: 'mock-item-1',
               product_name: 'Mock Product 1',
               quantity: 2,
-              item_total: 59.98,
+              item_total: 1000,
               image_url: "https://woodmart.xtemos.com/wp-content/uploads/2016/08/product-accessories-8-1-430x491.jpg.webp"
             },
             {
               order_item_id: 'mock-item-2',
               product_name: 'Mock Product 2',
               quantity: 1,
-              item_total: 70.01,
+              item_total: 750,
               image_url:  "https://woodmart.xtemos.com/wp-content/uploads/2016/09/product-furniture-18.jpg"
             }
           ]
@@ -42,9 +48,11 @@ const OrderConfirmation = () => {
         setOrder(mockOrder);
      
   }, []);
-
+  
   if (!order) return <p>Loading...</p>;
   const items = order.OrderItems || [];
+  const itemsSubtotal = order.OrderItems.reduce((sum, item) => sum + item.item_total, 0);
+  const totalAmount = itemsSubtotal - order.discount_price - order.coupon_discount + order.shipping_price;
 
   return (
     <div className="order-confirmation">
@@ -52,34 +60,52 @@ const OrderConfirmation = () => {
         <h2>✅ Your Order Confirmed</h2>
         <p>Thank you for shopping with us, your order detail below</p>
       </div>
+      <div className="product-table-border">
       <table className="product-table">
         <thead>
-          <tr><th>Product</th><th>Quantity</th><th>Total</th></tr>
+          <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Total</th>
+          </tr>
         </thead>
         <tbody>
           {items.map(item => (
             <tr key={item.order_item_id}>
-              <td><img src={item.image_url || '/placeholder.jpg'} width="60" alt={item.product_name}/> {item.product_name}</td>
+              <td className="product-cell"><img src={item.image_url || '/placeholder.jpg'} width="60" alt={item.product_name}/> {item.product_name}</td>
               <td>{item.quantity}</td>
-              <td>${item.item_total}</td>
+              <td>₹{item.item_total}</td>
             </tr>
           ))}
         </tbody>
-      </table>
+        </table>
+        </div>
 
-      <div className="price-summary">
-        <p><b>Total Price:</b> ${order.total_amount}</p>
-        <p><b>Payment Method:</b> {order.payment_method}</p>
-        <p><b>Shipping Address:</b> {order.shipping_address}</p>
+      <div className="price-details-box">
+      <h4>Price Details ({order.OrderItems.length})</h4>
+        <div className="price-line"><span>Total Item Price</span><span>₹{itemsSubtotal}</span></div>
+        <div className="price-line"><span>Discount Price</span><span>₹{order.discount_price}</span></div>
+        <div className="price-line"><span>Coupon Discount</span><span>₹{order.coupon_discount}</span></div>
+        <div className="price-line"><span>Shipping Price</span><span>₹{order.shipping_price}</span></div>
+        <div className="price-line"><span>Payment Method</span><span>{order.payment_method}</span></div>
+        <div className="price-line total-price"><span>TOTAL PRICE</span><span>₹{totalAmount}</span></div>
       </div>
 
+      {/* Shipping Address */}
+      <div className="shipping-address">
+        <h4>Shipping Address</h4>
+        <p>{order.shipping_address}</p>
+      </div>
+
+      {/* Action Button */}
       <div className="actions">
-      <button className="detail-btn" onClick={() => navigate(`/orders?user_id=${user_id}`)}>View My Orders</button>
+        <button className="detail-btn" onClick={() => navigate(`/orders?user_id=${user_id}`)}>
+          View My Orders
+        </button>
       </div>
     </div>
   );
 };
-
 export default OrderConfirmation;
 
 /*import React, { useEffect, useState } from "react";

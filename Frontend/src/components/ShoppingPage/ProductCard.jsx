@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import "./ProductCard.css";
 
@@ -6,6 +5,7 @@ const ProductCard = ({ product }) => {
   const item = product.ProductItems?.[0];
 
   return (
+    
     <div className="product-card">
       <img
         src={
@@ -31,7 +31,8 @@ const ProductCard = ({ product }) => {
       >
         {item?.qty_in_stocks > 0 ? "In Stock" : "Out of Stock"}
       </p>
-    </div>
+      </div >
+ 
   );
 };
 
