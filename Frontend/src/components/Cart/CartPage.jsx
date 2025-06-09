@@ -1,6 +1,5 @@
-
+import { useState } from "react";
 import { useCart } from "../Context/CartContext";
-import ApplyCouponSidebar from "./ApplyCouponSidebar";
 import CartItem from "./CartItem";
 import "./cartPage.css";
 import CartSummary from "./CartSummary";
@@ -10,8 +9,17 @@ import EmptyCartMessage from "./EmptyCartMessage";
 
 const CartPage = () => {
   const { cart, removeItem, updateItem } = useCart();
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
   const cartItems = cart?.CartItems || [];
     
+  const handleApplyCoupon = (coupon) => {
+    setAppliedCoupon(coupon);
+  };
+
+  const handleEditCoupon = () => {
+    setAppliedCoupon(null);
+  };
+
   const handleCheckout = () => {  
     // Handle checkout logic here  
     alert("Proceeding to checkout...");  
@@ -25,7 +33,7 @@ const CartPage = () => {
       ) : (
         <div className="cart-container">
   <div className="left-section">
-    <DeliveryAddressSection />
+    <DeliveryAddressSection onAddressSubmit={() => {}} />
     <div className="cart-items">
       {cartItems.map((item) => (
         <CartItem
@@ -38,9 +46,17 @@ const CartPage = () => {
     </div>
   </div>
   <div className="right-sidebar">
-    <CouponSection />
-    <ApplyCouponSidebar />
-    <CartSummary cartItems={cart.CartItems} handleCheckout={handleCheckout} />
+  <CouponSection
+         onApplyCoupon={handleApplyCoupon}
+         appliedCoupon={appliedCoupon}
+         onEditCoupon={handleEditCoupon}     
+    />
+   
+    <CartSummary
+         cartItems={cartItems}
+         appliedCoupon={appliedCoupon}
+         handleCheckout={handleCheckout}
+    />
     
   </div>
 </div>

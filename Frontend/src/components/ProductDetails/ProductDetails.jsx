@@ -21,7 +21,7 @@ const ProductDetails = () => {
     const loadProduct = async () => {
       try {
         const data = await fetchProductById(
-          "ca97d9f6-7077-4880-be88-5e8e21ca06ac"
+         "0110d8a4-c3ed-4a97-b6fa-15db656a9ea1"
         );
         const combinedData = {
           ...data.product, // flatten product fields
@@ -124,6 +124,8 @@ const ProductDetails = () => {
         productId={id}
         product={product}
       />
+      <YouMayAlsoLikeProducts />
+            <SuggestedProducts />
     </div>
   );
 };

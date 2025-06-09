@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { fetchAllProducts, fetchProductsByCategory } from "../../services/api";
+import { useEffect, useState } from "react";
+import image1 from "../../assets/Picture1.webp";
 import ProductCard from "./ProductCard";
 import "./ProductList.css";
-import image1 from "../../assets/Picture1.webp";
 
 const ProductList = ({
   price,

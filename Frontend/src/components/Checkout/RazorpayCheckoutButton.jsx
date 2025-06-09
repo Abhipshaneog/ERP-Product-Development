@@ -25,7 +25,7 @@ const RazorpayCheckoutButton = ({ user_id, address, setOrderData  }) => {
       // 1. Create Order in backend
       const orderRes = await axios.post('http://localhost:5003/api/v1/orders', {
         user_id: user_id,
-        shipping_address: `${address.street}, ${address.city}, ${address.state} - ${address.pincode}`,
+        shipping_address: `${address.firstName} ${address.lastName}, ${address.address}, ${address.city}, ${address.state} - ${address.pincode}`,
         payment_method: 'UPI', // or get from UI if you allow selection
       });
 
@@ -96,10 +96,9 @@ const RazorpayCheckoutButton = ({ user_id, address, setOrderData  }) => {
 
   return (
     <button
-      onClick={handlePayment}
-      className="bg-green-600 text-white px-4 py-2 rounded"
+      onClick={handlePayment} 
     >
-      Pay Now, AND PLACE YOUR ORDER
+      Continue FOR Payment 
     </button>
   );
 };

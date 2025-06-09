@@ -14,6 +14,7 @@ import LoginRegister from "./components/LoginAndRegister/LoginRegister";
 import PasswordReset from "./components/LoginAndRegister/PasswordReset";
 import ResetPassword from "./components/LoginAndRegister/ResetPassword";
 import NotFoundPage from "./components/NotFound/NotFoundPage";
+import OrderCancellation from "./components/OrderCancellation/OrderCancellation";
 import OrderConfirmation from "./components/OrderConfirmation/OrderConfirmation";
 import CancelOrderPage from "./components/OrderHistory/CancelOrderPage";
 import OrderPage from "./components/OrderHistory/OrderPage";
@@ -60,7 +61,8 @@ function App() {
             <Route path="cart/:user_id" element={<CartPage />} />
             <Route path="wishlist" element={<Wishlist />} />
            <Route path="/checkout/:user_id" element={<CheckoutPageMain />} />
-            <Route path="order-confirmation" element={<OrderConfirmation />} />
+              <Route path="order-confirmation" element={<OrderConfirmation />} />
+              <Route path="order-cancel" element={<OrderCancellation />} />
             <Route path="orders" element={<OrderPage />} />
               {/*  <Route path="/orders/:orderId/items/:orderItemId/track" element={<TrackOrderPage />} />
               <Route path="/orders/:orderId/items/:orderItemId/cancel" element={<CancelOrderPage />} />

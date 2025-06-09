@@ -1,4 +1,3 @@
-import React from "react";
 import "./PrivacyPolicy.css";
 
 const PrivacyPolicy = () => {
@@ -6,23 +5,7 @@ const PrivacyPolicy = () => {
     <div className="privacy-policy">
       <div className="heading">
         <section className="privacy-head-section">
-          <h2 className="privacy-subtitle-heading">Who We Are</h2>
-          <p className="privacy-content-head">
-            Our website address is:{" "}
-            <a
-              href="https://woodmart.xtemos.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              https://woodmart.xtemos.com
-            </a>
-            .
-          </p>
-          <p className="privacy-content-head">
-            Thank you for visiting XTemos Studio. We are a company dedicated to
-            [Your Company Mission]. Please read this Privacy Policy to
-            understand how we handle your personal data.
-          </p>
+          <h2 className="privacy-subtitle-heading">Privacy Policy</h2>
         </section>
       </div>
       <section className="privacy-section">

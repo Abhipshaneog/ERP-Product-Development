@@ -119,11 +119,12 @@ const AddressPage = ({onSubmit, defaultAddress }) => {
         {errors.street && <p className="error-text">{errors.street}</p>}
 
         <button
-          onClick={handleSubmit}
-          className="submit-button"
-        >
-          Continue to Payment
-        </button>
+        onClick={handleSubmit}
+        className="submit-button"
+      >
+        Confirm Address
+      </button>
+
       </div>
     </div>
   );
