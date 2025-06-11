@@ -21,6 +21,9 @@ const logout = async (req, res) => {
     if (!existingToken) {
       return res.status(400).json({ message: 'Invalid refresh token.' });
     }
+     // Delete Redis session key
+     const sessionKey = `session:${existingToken.userId}:${existingToken.device.deviceId}`;
+     await redisClient.del(sessionKey);
 
     // Delete the device record if it exists and is associated with this refresh token
     if (existingToken.device) {

@@ -16,8 +16,8 @@ const {
 const router = express.Router();
 
 // Authentication Routes
-router.post("/login",getDeviceInfo, verifyTokens, loginController.login);
-router.post("/register",getDeviceInfo, verifyTokens, registerController.register);
+router.post("/login",getDeviceInfo, loginController.login);
+router.post("/register",getDeviceInfo, registerController.register);
 router.post("/logout",getDeviceInfo, logoutController.logout);
 router.post("/google-login",getDeviceInfo, checkIfUserLoggedIn, googleLoginController.login);
 

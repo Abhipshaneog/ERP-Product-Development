@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const prisma = require('../../models/prisma/prismaClient'); // Prisma client initialization
+const redisClient = require('../../config/redisClient');
 const { generateTokens } = require('../../utils/tokenUtils');
 
 // Service to handle user login
@@ -18,6 +19,13 @@ const loginService = async (email, password, deviceId, userAgent, ipAddress) => 
 
   if (!isPasswordValid) {
     throw new Error('Invalid email or password');
+  }
+
+  // Check if this device already has an active session
+  const sessionKey = `session:${user.id}:${deviceId}`;
+  const existingSession = await redisClient.get(sessionKey);
+  if (existingSession) {
+    throw new Error('This device is already logged in.');
   }
 
   // Generate access and refresh tokens
@@ -58,6 +66,8 @@ const loginService = async (email, password, deviceId, userAgent, ipAddress) => 
       expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days expiration
     },
   });
+  // Save session in Redis with 1-day TTL
+  await redisClient.set(sessionKey, accessToken, { EX: 60 * 60 * 24 });
 
   return { accessToken, refreshToken, device }; // Return the device info along with tokens
 };
