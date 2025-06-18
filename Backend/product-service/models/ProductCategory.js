@@ -25,10 +25,6 @@ const ProductCategory = sequelize.define(
       allowNull: true,
       defaultValue: null,
     },
-    size_category_id: {
-      type: DataTypes.UUID,
-      allowNull: true,
-    },
     parent_category_id: {
       type: DataTypes.UUID,
       allowNull: true,

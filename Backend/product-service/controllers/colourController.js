@@ -1,77 +1,82 @@
-const colourService = require('../services/colourService');
+const { Colour } = require('../models');
+const { ErrorHandler } = require('../services/errorHandler');
 
 // Get all colours
-const getAllColours = async (req, res) => {
+exports.getAllColours = async (req, res, next) => {
   try {
-    const colours = await colourService.getAllColours();
-    res.status(200).json(colours);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-// Get a colour by ID
-const getColourById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const colour = await colourService.getColourById(id);
-    if (!colour) {
-      return res.status(404).json({ message: 'Colour not found' });
-    }
-    res.status(200).json(colour);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    const colours = await Colour.findAll({
+      order: [['colour_name', 'ASC']]
+    });
+    res.json(colours);
+  } catch (err) {
+    next(new ErrorHandler(500, 'Failed to fetch colours', err.message));
   }
 };
 
 // Create a new colour
-const createColour = async (req, res) => {
+exports.createColour = async (req, res, next) => {
   try {
-    const colour = await colourService.createColour(req.body);
+    const { colour_name, colour_code } = req.body;
+    
+    const existingColour = await Colour.findOne({ where: { colour_name } });
+    if (existingColour) {
+      throw new ErrorHandler(400, 'Colour with this name already exists');
+    }
+
+    const colour = await Colour.create({
+      colour_name,
+      colour_code
+    });
+
     res.status(201).json(colour);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    next(err instanceof ErrorHandler ? err : new ErrorHandler(500, 'Failed to create colour', err.message));
   }
 };
 
 // Update a colour
-const updateColour = async (req, res) => {
+exports.updateColour = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const updatedColour = await colourService.updateColour(id, req.body);
-    res.status(200).json(updatedColour);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    const { colour_name, colour_code } = req.body;
+
+    const colour = await Colour.findByPk(id);
+    if (!colour) {
+      throw new ErrorHandler(404, 'Colour not found');
+    }
+
+    // Check if another colour with the same name exists
+    if (colour_name && colour_name !== colour.colour_name) {
+      const existingColour = await Colour.findOne({ where: { colour_name } });
+      if (existingColour) {
+        throw new ErrorHandler(400, 'Another colour with this name already exists');
+      }
+    }
+
+    await colour.update({
+      colour_name: colour_name || colour.colour_name,
+      colour_code: colour_code || colour.colour_code
+    });
+
+    res.json(colour);
+  } catch (err) {
+    next(err instanceof ErrorHandler ? err : new ErrorHandler(500, 'Failed to update colour', err.message));
   }
 };
 
-// Soft delete a colour
-const deleteColour = async (req, res) => {
+// Delete a colour
+exports.deleteColour = async (req, res, next) => {
   try {
     const { id } = req.params;
-    await colourService.deleteColour(id);
-    res.status(200).json({ message: 'Colour deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
 
-// Restore a soft-deleted colour
-const restoreColour = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const restoredColour = await colourService.restoreColour(id);
-    res.status(200).json(restoredColour);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+    const colour = await Colour.findByPk(id);
+    if (!colour) {
+      throw new ErrorHandler(404, 'Colour not found');
+    }
 
-module.exports = {
-  getAllColours,
-  getColourById,
-  createColour,
-  updateColour,
-  deleteColour,
-  restoreColour,
+    await colour.destroy();
+    res.status(204).send();
+  } catch (err) {
+    next(err instanceof ErrorHandler ? err : new ErrorHandler(500, 'Failed to delete colour', err.message));
+  }
 };

@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const sequelize = new Sequelize(process.env.POSTGRES_URI, {
   dialect: "postgres",
-  logging: false, // Disable logging in production
+  logging: false,//console.log, // Disable logging in production
 });
 
 const connectDB = async () => {

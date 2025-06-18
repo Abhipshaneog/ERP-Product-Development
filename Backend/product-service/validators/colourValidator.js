@@ -1,6 +1,6 @@
 const { body, param } = require("express-validator");
 
-const colourValidator = [
+const validateColour  = [
   body("colour_name")
     .isString().withMessage("Colour name must be a string")
     .isLength({ max: 100 }).withMessage("Colour name must not exceed 100 characters")
@@ -13,9 +13,9 @@ const colourValidator = [
 
 ];
 
-const validateColourId = [
-  param("id")
-    .isUUID().withMessage("Colour ID must be a valid UUID"),
-];
+// const validateColourId = [
+//   param("id")
+//     .isUUID().withMessage("Colour ID must be a valid UUID"),
+// ];
 
-module.exports = { colourValidator , validateColourId };
+module.exports = { validateColour };

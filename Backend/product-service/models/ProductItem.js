@@ -7,77 +7,84 @@ const SizeOption = require("./SizeOption");
 const ProductItem = sequelize.define(
   "ProductItem",
   {
-    product_item_id:{
-    type: DataTypes.UUID,
-  defaultValue: DataTypes.UUIDV4,
-  primaryKey: true,
-
+    product_item_id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
     },
     product_id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: true,
+      allowNull: false,
       references: {
         model: Product,
-        key: "product_id",
-      },
+        key: 'product_id'
+      }
     },
     colour_id: {
       type: DataTypes.UUID,
       allowNull: true,
       references: {
         model: Colour,
-        key: "colour_id",
-      },
+        key: 'colour_id'
+      }
     },
     size_id: {
       type: DataTypes.UUID,
       allowNull: true,
       references: {
         model: SizeOption,
-        key: "size_id",
-      },
+        key: 'size_id'
+      }
     },
     original_price: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: true,
-      validate: {
-        isDecimal: true,
-        min: 0,
-      },
+      allowNull: false
     },
     discount_applicable: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: true,
-      validate: {
-        isDecimal: true,
-        min: 0,
-        max: 100, 
-      },
+      type: DataTypes.DECIMAL(5, 2),
+      defaultValue: 0
     },
-
     sale_price: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: true,
-      validate: {
-        isDecimal: true,
-        min: 0,
-      },
+      allowNull: false
     },
     qty_in_stocks: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      defaultValue: 0
     },
-    
-    deletedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
+    variant_sku: {
+      type: DataTypes.STRING(100),
+      unique: true,
+      allowNull: true
     },
-  },
-  {
-    tableName: "product_item",
+    variant_barcode: {
+      type: DataTypes.STRING(100),
+      unique: true,
+      allowNull: true
+    },
+    weight: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true
+    },
+    length: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true
+    },
+    breadth: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true
+    },
+    height: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true
+    }
+  }, {
+    tableName: 'product_item',
     timestamps: true,
-    paranoid: true, 
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+    paranoid: true
   }
 );
 

@@ -13,7 +13,11 @@ const Colour = sequelize.define(
     colour_name: {
       type: DataTypes.STRING(100),
       allowNull: true,
-      defaultValue: null,
+      unique: true,
+      validate: {
+        notEmpty: true,
+        len: [1, 100]
+      }
     },
     colour_code: {  
       type: DataTypes.STRING(10), 

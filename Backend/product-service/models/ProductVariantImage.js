@@ -1,21 +1,19 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../config/db");
-const Product = require("./Product");
+const ProductItem = require("./ProductItem");
 
-const ProductImage = sequelize.define(
-  "ProductImage",
-  {
+const ProductVariantImage = sequelize.define('ProductVariantImage', {
     image_id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
-    product_id: {
+    product_item_id: {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: Product,
-        key: 'product_id'
+        model: ProductItem,
+        key: 'product_item_id'
       }
     },
     image_url: {
@@ -26,20 +24,15 @@ const ProductImage = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    is_primary: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
     sort_order: {
       type: DataTypes.INTEGER,
       defaultValue: 0
     }
   }, {
-    tableName: 'product_image',
+    tableName: 'product_variant_image',
     timestamps: true,
     createdAt: 'created_at',
     updatedAt: false
-  }
-);
-
-module.exports = ProductImage;
+});
+  
+module.exports = ProductVariantImage;

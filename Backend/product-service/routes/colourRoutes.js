@@ -1,26 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const colourController = require('../controllers/colourController');
-//const {  } = require("../middlewares/authMiddleware");
-const validationHandler = require("../middlewares/validationHandler");
-const { colourValidator , validateColourId } = require("../validators/colourValidator");
+const { validateColour } = require('../validators/colourValidator');
 
-// Route to get all colours
+// Get all colours
 router.get('/', colourController.getAllColours);
 
-// Route to get a colour by ID
-router.get('/:id', validationHandler, validateColourId, colourController.getColourById);
+// Create a new colour
+router.post('/', validateColour, colourController.createColour);
 
-// Route to create a new colour
-router.post('/',  validationHandler, colourValidator , colourController.createColour);  // Admin only
+// Update a colour
+router.put('/:id', validateColour, colourController.updateColour);
 
-// Route to update a colour
-router.put('/:id', validationHandler, validateColourId, colourValidator, colourController.updateColour); // Admin only
-
-// Route to soft delete a colour
-router.delete('/:id',  validationHandler, validateColourId, colourController.deleteColour); // Admin only
-
-// Route to restore a soft-deleted colour
-router.patch('/:id/restore', validationHandler, validateColourId, colourController.restoreColour); // Admin only
+// Delete a colour
+router.delete('/:id', colourController.deleteColour);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const { body, param } = require("express-validator");
 
 // Validate request body for creating/updating size options
-const validateSizeOption = [
+const validateSize = [
   body("size_name")
     .isString()
     .trim()
@@ -15,17 +15,10 @@ const validateSizeOption = [
     .isInt()
     .withMessage("Sort order must be an integer."),
 
-  body("size_category_id")
-    .optional({ nullable: true })
-    .isUUID()
-    .withMessage("Invalid size_category_id format."),
+    body('product_category_id')
+    .optional()
+    .isUUID().withMessage('Product category ID must be a valid UUID'),
+  
 ];
 
-// Validate size_id in route params
-const validateSizeIdParam = [
-  param("size_id")
-    .isUUID()
-    .withMessage("Invalid size_id format."),
-];
-
-module.exports = { validateSizeOption, validateSizeIdParam };
+module.exports = { validateSize };

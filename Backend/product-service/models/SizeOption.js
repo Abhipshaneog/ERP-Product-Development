@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../config/db");
-const SizeCategory = require("./SizeCategory");
+const ProductCategory = require("./ProductCategory");
 
 const SizeOption = sequelize.define(
   "SizeOption",
@@ -14,23 +14,27 @@ const SizeOption = sequelize.define(
     size_name: {
       type: DataTypes.STRING(100),
       allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: [1, 100]
+      }
       //defaultValue: null,
     },
     sort_order: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      validate: {
+        isInt: true
+      }
     },
-    size_category_id: {
+    product_category_id: {
       type: DataTypes.UUID,
       allowNull: true,
       references: {
-        model: SizeCategory,
-        key: "category_id",
-      },
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
-    
-    },
+        model: ProductCategory, 
+        key: 'product_category_id'
+      }
+    }
   },
   {
     tableName: "size_option",

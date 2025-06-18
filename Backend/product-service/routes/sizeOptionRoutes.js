@@ -1,14 +1,21 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const sizeOptionController = require("../controllers/sizeOptionController");
-//const { } = require("../middlewares/authMiddleware");
-const validationHandler = require("../middlewares/validationHandler");
-const { validateSizeOption, validateSizeIdParam } = require("../validators/sizeOptionValidator");
+const sizeController = require('../controllers/sizeOptionController');
+const { validateSize } = require('../validators/sizeOptionValidator');
 
-router.get("/", sizeOptionController.getSizeOptionsByCategory); //Public
+// Get all sizes
+router.get('/', sizeController.getAllSizes);
 
-router.post("/",  validateSizeOption, validationHandler, sizeOptionController.addSizeOption); // Admin only
-router.put("/:size_id",  validateSizeIdParam, validateSizeOption, validationHandler, sizeOptionController.updateSizeOption); // Admin only
-router.delete("/:size_id",  validateSizeIdParam, validationHandler, sizeOptionController.deleteSizeOption); // Admin only
+// Get sizes by category
+router.get('/category/:categoryId', sizeController.getSizesByCategory);
+
+// Create a new size
+router.post('/', validateSize, sizeController.createSize);
+
+// Update a size
+router.put('/:id', validateSize, sizeController.updateSize);
+
+// Delete a size
+router.delete('/:id', sizeController.deleteSize);
 
 module.exports = router;

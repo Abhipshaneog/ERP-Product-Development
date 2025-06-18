@@ -1,47 +1,129 @@
-const sizeOptionService = require("../services/sizeOptionService");
+const { SizeOption, ProductCategory } = require('../models');
+const { ErrorHandler } = require('../services/errorHandler');
 
-exports.getSizeOptionsByCategory = async (req, res) => {
+// Get all sizes with category information
+exports.getAllSizes = async (req, res, next) => {
   try {
-    const { category_id } = req.query;
-     // Validate category_id (Optional: Ensure it's UUID)
-     if (category_id && !/^[0-9a-fA-F-]{36}$/.test(category_id)) {
-      return res.status(400).json({ error: "Invalid category_id format." });
-    }
-
-    const sizes = await sizeOptionService.getSizeOptionsByCategory(category_id);
-    res.status(200).json(sizes);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    const sizes = await SizeOption.findAll({
+      include: [{
+        model: ProductCategory,
+        as: 'category',
+        attributes: ['product_category_id', 'category_name']
+      }],
+      order: [['sort_order', 'ASC']]
+    });
+    res.json(sizes);
+  } catch (err) {
+    next(new ErrorHandler(500, 'Failed to fetch sizes', err.message));
   }
 };
 
-exports.addSizeOption = async (req, res) => {
+// Get sizes by category
+exports.getSizesByCategory = async (req, res, next) => {
   try {
-    const { size_name, sort_order, size_category_id } = req.body;
-    const size = await sizeOptionService.addSizeOption(size_name, sort_order, size_category_id);
+    const { categoryId } = req.params;
+    
+    const sizes = await SizeOption.findAll({
+      where: { product_category_id: categoryId },
+      include: [{
+        model: ProductCategory,
+        as: 'category',
+        attributes: ['product_category_id', 'category_name']
+      }],
+      order: [['sort_order', 'ASC']]
+    });
+    
+    res.json(sizes);
+  } catch (err) {
+    next(new ErrorHandler(500, 'Failed to fetch sizes by category', err.message));
+  }
+};
+
+// Create a new size
+exports.createSize = async (req, res, next) => {
+  try {
+    const { size_name, sort_order, product_category_id } = req.body;
+
+    // Validate category exists if provided
+    if (product_category_id) {
+      const category = await ProductCategory.findByPk(product_category_id);
+      if (!category) {
+        throw new ErrorHandler(400, 'Invalid product category');
+      }
+    }
+
+    const size = await SizeOption.create({
+      size_name,
+      sort_order: sort_order || 1,
+      product_category_id
+    });
+
     res.status(201).json(size);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    next(err instanceof ErrorHandler ? err : new ErrorHandler(500, 'Failed to create size', err.message));
   }
 };
 
-exports.updateSizeOption = async (req, res) => {
-    try {
-      const { size_id } = req.params;
-      const updates = req.body;
-      const updatedSize = await sizeOptionService.updateSizeOption(size_id, updates);
-      res.status(200).json({ message: "Size option updated successfully", updatedSize});
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+// Update a size
+exports.updateSize = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { size_name, sort_order, product_category_id } = req.body;
+
+    const size = await SizeOption.findByPk(id, {
+      include: [{
+        model: ProductCategory,
+        as: 'category',
+        attributes: ['product_category_id', 'category_name']
+      }]
+    });
+    
+    if (!size) {
+      throw new ErrorHandler(404, 'Size not found');
     }
-  };
-  
-  exports.deleteSizeOption = async (req, res) => {
-    try {
-      const { size_id } = req.params;
-      await sizeOptionService.deleteSizeOption(size_id);
-      res.status(200).json({ message: "Size option deleted successfully" });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+
+    // Validate category exists if provided
+    if (product_category_id) {
+      const category = await ProductCategory.findByPk(product_category_id);
+      if (!category) {
+        throw new ErrorHandler(400, 'Invalid product category');
+      }
     }
-  };
+
+    await size.update({
+      size_name: size_name || size.size_name,
+      sort_order: sort_order || size.sort_order,
+      product_category_id: product_category_id || size.product_category_id
+    });
+
+    // Reload the size to get fresh associations
+    const updatedSize = await size.reload({
+      include: [{
+        model: ProductCategory,
+        as: 'category',
+        attributes: ['product_category_id', 'category_name']
+      }]
+    });
+
+    res.json(updatedSize);
+  } catch (err) {
+    next(err instanceof ErrorHandler ? err : new ErrorHandler(500, 'Failed to update size', err.message));
+  }
+};
+
+// Delete a size
+exports.deleteSize = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const size = await SizeOption.findByPk(id);
+    if (!size) {
+      throw new ErrorHandler(404, 'Size not found');
+    }
+
+    await size.destroy();
+    res.status(204).send();
+  } catch (err) {
+    next(err instanceof ErrorHandler ? err : new ErrorHandler(500, 'Failed to delete size', err.message));
+  }
+};
